@@ -1,0 +1,26 @@
+.SignIn {
+  flex: 1 1 auto;
+  display: flex;
+}
+
+.SignIn-center {
+  position: relative;
+  top: 10%;
+  margin: 0 auto;
+}
+
+.SignIn-card {
+  min-width: 400px;
+}
+
+.SignIn h1 {
+  padding-bottom: 16px;
+}
+
+.SignIn-button {
+  padding-bottom: 8px;
+}
+
+.SignIn-divider {
+  margin: 30px 0 20px 0;
+}

@@ -1,0 +1,27 @@
+.TaskList{
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+}
+
+.TaskList-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.TaskList-header {
+  flex: 1;
+}
+
+.TaskList-name {
+  font-weight: bold;
+  flex: 2;
+}
+
+.TaskList-options {
+  font-weight: bold;
+  flex: 1;
+}

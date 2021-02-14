@@ -1,0 +1,16 @@
+html, body , #root{
+  margin: 0;
+  height: 100%;
+}
+
+.App {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 auto;
+  margin: 0;
+  height: 100%;
+
+  background-image: url(./assets/dashboard_background.jpg);
+  background-size: cover;
+}

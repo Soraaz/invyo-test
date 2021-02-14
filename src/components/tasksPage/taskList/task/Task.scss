@@ -1,0 +1,15 @@
+.TaskItem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.TaskItem-name {
+  flex: 2;
+}
+
+.TaskItem-options {
+  flex: 1;
+  justify-content: center;
+}
