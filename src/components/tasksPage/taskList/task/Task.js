@@ -7,6 +7,7 @@ import { Button, ButtonGroup, Card, Intent } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 import TaskDelete from '../../taskDelete/TaskDelete';
 import TaskUpdate from '../../taskUpdate/TaskUpdate';
+import { isMobile } from 'react-device-detect';
 
 /**
  * Task class
@@ -63,12 +64,12 @@ class Task extends React.Component {
         <Button
           intent={Intent.SUCCESS}
           rightIcon={IconNames.CONFIRM}
-          text="Fini"
+          text={!isMobile ? 'Fini' : null}
         /> :
         <Button
           intent={Intent.PRIMARY}
           rightIcon={IconNames.REFRESH}
-          text="En cours"
+          text={!isMobile ? 'En cours' : null}
         />
     )
   }

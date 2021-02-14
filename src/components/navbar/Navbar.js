@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { Alignment } from '@blueprintjs/core/lib/esnext/common/alignment';
 import { Link } from 'react-router-dom';
 import App from '../../App';
+import { isMobile } from 'react-device-detect';
 
 /**
    * Navbar class
@@ -43,8 +44,8 @@ class Navbar extends React.Component {
             {
               this.props.isConnected ?
                 <div>
-                  <Link to="/data" style={{ color: 'inherit', textDecoration: 'inherit' }}><Button className="bp3-minimal" icon="box" text="Articles"/></Link>
-                  <Link to="/todo" style={{ color: 'inherit', textDecoration: 'inherit' }}><Button className="bp3-minimal" icon="document" text="Mes tâches"/></Link>
+                  <Link to="/data" style={{ color: 'inherit', textDecoration: 'inherit' }}><Button className="bp3-minimal" icon="box" text={!isMobile ? 'Articles' : null}/></Link>
+                  <Link to="/todo" style={{ color: 'inherit', textDecoration: 'inherit' }}><Button className="bp3-minimal" icon="document" text={!isMobile ? 'Mes tâches' : null}/></Link>
                 </div>
                 : null
             }

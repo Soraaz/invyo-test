@@ -7,6 +7,7 @@ import { IconNames } from '@blueprintjs/icons';
 import TaskCreate from './taskCreate/TaskCreate';
 import TaskList from './taskList/TaskList';
 import App from '../../App';
+import { isMobile } from 'react-device-detect';
 
 /**
  * TasksPage class
@@ -120,6 +121,10 @@ class TasksPage extends React.Component {
     })
   }
 
+  textShowButton = () => {
+    return <span>{this.state.seeEndTask ? 'Cacher' : 'Voir'} les tâches finis</span>
+  }
+
   /**
    * Render (React lifecycle)
    */
@@ -143,13 +148,13 @@ class TasksPage extends React.Component {
               intent={Intent.SUCCESS}
               rightIcon={IconNames.ADD}
               onClick={this.toggleTaskCreate}
-            >Nouvelle tâche</Button>
+            >{!isMobile ? 'Nouvelle tâche' : null}</Button>
             <Button
               className="Tasks-view-finish"
               intent={Intent.PRIMARY}
               rightIcon={this.state.seeEndTask ? IconNames.EYE_OFF : IconNames.EYE_ON}
               onClick={this.toggleSeeEndTask}
-            >{this.state.seeEndTask ? 'Cacher' : 'Voir'} les tâches finis</Button>
+            >{!isMobile ? this.textShowButton() : null}</Button>
             <TaskList tasks={this.state.tasks} deleteTask={this.deleteTask} seeEndTask={this.state.seeEndTask} updateTask={this.updateTask}/>
           </Card>
         </div>

@@ -106,7 +106,7 @@ class TaskCreate extends React.Component {
         valid: false
       },
       date: {
-        data: '',
+        data: new Date(),
         valid: false
       }
     }), this.props.close)
