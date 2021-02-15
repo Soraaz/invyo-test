@@ -109,7 +109,7 @@ class TaskUpdate extends React.Component {
   }
 
   /**
-   * Create a new task
+   * Create a new data
    */
   handleCreate = () => {
     debugLog('TaskUpdate::handleCreate')

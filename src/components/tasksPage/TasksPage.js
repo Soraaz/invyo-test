@@ -18,7 +18,7 @@ class TasksPage extends React.Component {
    */
   constructor(props) {
     debugLog('TasksPage::constructor')
-    const tasks = localStorage.getItem('taskList') !== null ? JSON.parse(localStorage.getItem('taskList')) : []
+    const tasks = localStorage.getItem('dataList') !== null ? JSON.parse(localStorage.getItem('dataList')) : []
 
     super(props)
     this.state = {
@@ -38,7 +38,7 @@ class TasksPage extends React.Component {
   }
 
   /**
-   * Open a new Task Panel
+   * Open a new Data Panel
    */
   toggleTaskCreate = () => {
     debugLog('TasksPage::toggleTaskCreate')
@@ -52,8 +52,8 @@ class TasksPage extends React.Component {
   }
 
   /**
-   * Handle create new Task
-   * @param {object} task Task
+   * Handle create new Data
+   * @param {object} task Data
    */
   handleTaskCreate = (task) => {
     debugLog('TaskPage::handleTaskCreate')
@@ -62,14 +62,14 @@ class TasksPage extends React.Component {
         ...state,
         tasks: [...state.tasks, task]
       }), () => {
-        localStorage.setItem('taskList', JSON.stringify(this.state.tasks))
+        localStorage.setItem('dataList', JSON.stringify(this.state.tasks))
         App.showToast(Intent.SUCCESS, 'Ta nouvelle tâche a bien été créer !')
       })
     }
   }
 
   /**
-   * Handle create new Task
+   * Handle create new Data
    * Invert SeeEndTask state
    */
   toggleSeeEndTask = () => {
@@ -81,8 +81,8 @@ class TasksPage extends React.Component {
   }
 
   /**
-   * Delete a task
-   * @param {Number} index Index of the task
+   * Delete a data
+   * @param {Number} index Index of the data
    */
   deleteTask = (index) => {
     debugLog('TaskPage::deleteTask')
@@ -91,15 +91,15 @@ class TasksPage extends React.Component {
       tasks:  [...state.tasks.slice(0, index), ...state.tasks.slice(index+1)]
     }), () =>
     {
-      localStorage.setItem('taskList', JSON.stringify(this.state.tasks))
+      localStorage.setItem('dataList', JSON.stringify(this.state.tasks))
       App.showToast(Intent.SUCCESS, 'La tâche a bien été supprimée !')
     })
   }
 
   /**
-   * Update a task
-   * @param {Number} task Task data
-   * @param {Number} index Index of the task
+   * Update a data
+   * @param {Number} task Data data
+   * @param {Number} index Index of the data
    */
   updateTask = (task, index) => {
     debugLog('TaskPage::updateTask')
@@ -116,7 +116,7 @@ class TasksPage extends React.Component {
       ]
     }), () =>
     {
-      localStorage.setItem('taskList', JSON.stringify(this.state.tasks))
+      localStorage.setItem('dataList', JSON.stringify(this.state.tasks))
       App.showToast(Intent.SUCCESS, 'La tâche a bien été modifier !')
     })
   }
