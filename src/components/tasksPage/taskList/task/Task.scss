@@ -3,11 +3,28 @@
   justify-content: center;
   align-items: center;
   margin-top: 10px;
+  padding: 20px;
+}
+
+.TaskItem-mobile {
+  display: inline-block;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  padding: 20px;
 }
 
 .TaskItem-name {
   flex: 2;
   word-break: break-all;
+}
+
+.TaskItem-name-mobile {
+  flex: 2;
+  word-break: break-all;
+  margin-bottom: 20px;
 }
 
 .TaskItem-options {

@@ -1,10 +1,10 @@
 import React from 'react'
 
 import './Data.scss'
-import { debugLog } from '../../../../lib/logs';
-import PropTypes from 'prop-types';
-import { Button, Card, Intent, Tag } from '@blueprintjs/core';
-import { IconNames } from '@blueprintjs/icons';
+import { debugLog } from '../../../../lib/logs'
+import PropTypes from 'prop-types'
+import { Button, Card, Intent, Tag } from '@blueprintjs/core'
+import { IconNames } from '@blueprintjs/icons'
 // import { isMobile } from 'react-device-detect';
 
 /**
@@ -33,17 +33,17 @@ class Data extends React.Component {
    */
   render() {
     debugLog('Data:render')
-    let indexTag = -1;
+    let indexTag = -1
 
     const dataTags = Object.entries(this.props.tags).map(function (tags) {
       if (tags[1].length > 0)
       {
         return tags[1].map(function(tag) {
-          indexTag++;
-          return <Tag className="DataItem-tag" key={indexTag}>{tag}</Tag>;
+          indexTag++
+          return <Tag className="DataItem-tag" key={indexTag}>{tag}</Tag>
         })
       }
-    });
+    })
 
     return(
       <Card className="DataItem">
@@ -73,4 +73,4 @@ Data.propTypes = {
   index: PropTypes.number.isRequired
 }
 
-export default Data;
+export default Data

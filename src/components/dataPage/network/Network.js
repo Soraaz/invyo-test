@@ -1,10 +1,10 @@
 import React from 'react'
 
 import './Network.scss'
-import { debugLog } from '../../../lib/logs';
-import { H1 } from '@blueprintjs/core';
-import Graph from 'react-graph-vis';
-import PropTypes from 'prop-types';
+import { debugLog } from '../../../lib/logs'
+import { H1 } from '@blueprintjs/core'
+import Graph from 'react-graph-vis'
+import PropTypes from 'prop-types'
 
 /**
  * Network class
@@ -27,7 +27,7 @@ class Network extends React.Component {
     const graph = {
       nodes: this.props.network.nodes,
       edges: this.props.network.edges
-    };
+    }
 
     const options = {
       autoResize: true,
@@ -38,12 +38,12 @@ class Network extends React.Component {
         color: '#000000'
       },
       height: '500px'
-    };
+    }
 
     const events = {
       select: () => {
       }
-    };
+    }
 
     return(
       <div className="Network">
@@ -63,4 +63,4 @@ Network.propTypes = {
   network: PropTypes.object.isRequired
 }
 
-export default Network;
+export default Network

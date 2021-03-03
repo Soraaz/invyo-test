@@ -3,9 +3,9 @@ import React from 'react'
 import './TaskUpdate.scss'
 
 import PropTypes from 'prop-types'
-import { debugLog } from '../../../lib/logs';
+import { debugLog } from '../../../lib/logs'
 import { Button, ButtonGroup, Classes, Dialog, FormGroup, InputGroup, Intent } from '@blueprintjs/core'
-import { DateInput } from '@blueprintjs/datetime';
+import { DateInput } from '@blueprintjs/datetime'
 import { IconNames } from '@blueprintjs/icons'
 
 /**
@@ -16,9 +16,9 @@ class TaskUpdate extends React.Component {
    * Constructor (React lifecycle)
    */
   constructor(props) {
+    super(props)
     debugLog('TaskUpdate::constructor')
 
-    super(props)
     this.state = {
       name: {
         data: this.props.name,
@@ -64,8 +64,8 @@ class TaskUpdate extends React.Component {
    * @param {Object} dateString Date in String format
    */
   stringToDate = (dateString) => {
-    const parts = dateString.split('/');
-    return new Date(parts[2], parts[1] - 1, parts[0]);
+    const parts = dateString.split('/')
+    return new Date(parts[2], parts[1] - 1, parts[0])
   }
 
   /**
@@ -205,15 +205,12 @@ class TaskUpdate extends React.Component {
             labelFor="new-task-date"
           >
             <DateInput
-              id="new-task-date"
-              intent={this.state.date.valid ? Intent.PRIMARY : Intent.NONE}
               placeholder="Rentre un date de fin à ta tâche..."
               value={this.state.date.data}
               onChange={(e) => this.updateDate(e, 'date')}
               formatDate={date => date.toLocaleDateString()}
               parseDate={str => new Date(str)}
               //    minDate={new Date()}
-              popoverProps={{ inline: true }}
             />
           </FormGroup>
 
@@ -249,4 +246,4 @@ TaskUpdate.propTypes = {
   index: PropTypes.number.isRequired
 }
 
-export default TaskUpdate;
+export default TaskUpdate

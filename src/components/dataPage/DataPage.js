@@ -1,12 +1,12 @@
 import React from 'react'
 
 import './DataPage.scss'
-import { debugLog } from '../../lib/logs';
-import { Card, Elevation, H1, HTMLSelect } from '@blueprintjs/core';
+import { debugLog } from '../../lib/logs'
+import { Card, Elevation, H1, HTMLSelect } from '@blueprintjs/core'
 // import { isMobile } from 'react-device-detect';
-import DataList from './dataList/DataList';
+import DataList from './dataList/DataList'
 import datas from '../../data/data.js'
-import Network from './network/Network';
+import Network from './network/Network'
 
 /**
  * DataPage class
@@ -16,8 +16,8 @@ class DataPage extends React.Component {
    * Constructor (React lifecycle)
    */
   constructor(props) {
-    debugLog('DataPage::constructor')
     super(props)
+    debugLog('DataPage::constructor')
 
     const datasParse = datas.articles.map((task, index) => {
       return ({
@@ -171,4 +171,4 @@ class DataPage extends React.Component {
   }
 }
 
-export default DataPage;
+export default DataPage

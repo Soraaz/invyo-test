@@ -1,11 +1,11 @@
 import React from 'react'
 
 import './DataList.scss'
-import { debugLog } from '../../../lib/logs';
-import PropTypes from 'prop-types';
-import Data from './data/Data';
-import { Button, Card, Intent } from '@blueprintjs/core';
-import { IconNames } from '@blueprintjs/icons';
+import { debugLog } from '../../../lib/logs'
+import PropTypes from 'prop-types'
+import Data from './data/Data'
+import { Button, Card, Intent } from '@blueprintjs/core'
+import { IconNames } from '@blueprintjs/icons'
 
 /**
  * DataList class
@@ -15,8 +15,8 @@ class DataList extends React.Component {
    * Constructor (React lifecycle)
    */
   constructor(props) {
-    debugLog('DataList::constructor')
     super(props)
+    debugLog('DataList::constructor')
 
     this.state = {
       minIndex: 0,
@@ -24,6 +24,9 @@ class DataList extends React.Component {
     }
   }
 
+  /**
+   * componnentDidUpdate
+   */
   componentDidUpdate(prevProps) {
     if (prevProps.filterTag !== this.props.filterTag || prevProps.filterLanguage !== this.props.filterLanguage)
     {
@@ -66,14 +69,14 @@ class DataList extends React.Component {
    */
   render() {
     debugLog('DataList:render')
-    this.dataList = this.props.datas;
+    this.dataList = this.props.datas
 
     if (this.props.filterTag !== '')
     {
       this.dataList = this.dataList.filter((data) => {
         const tagFound = Object.entries(data.tags).filter((tags) => {
           return (tags[1].includes(this.props.filterTag))
-        });
+        })
         return tagFound.length > 0
       })
     }
@@ -94,7 +97,7 @@ class DataList extends React.Component {
 
     this.dataList = this.dataList.map((data, index) => {
       if (index < this.state.maxIndex && index >= this.state.minIndex)
-        return (<Data key={index} index={index} title={data.title} content={data.content} date={data.date} language={data.language} url={data.url} tags={data.tags}/>);
+        return (<Data key={index} index={index} title={data.title} content={data.content} date={data.date} language={data.language} url={data.url} tags={data.tags}/>)
     })
 
     return(
@@ -142,4 +145,4 @@ DataList.propTypes = {
   filterTag: PropTypes.string.isRequired
 }
 
-export default DataList;
+export default DataList

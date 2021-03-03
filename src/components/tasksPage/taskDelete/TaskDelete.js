@@ -22,7 +22,7 @@ class TaskDelete extends React.Component {
         cancelButtonText="Annuler"
         confirmButtonText="Supprimer"
         onClose={this.props.close}
-        onCancel={this.onClose}
+        onCancel={this.props.close}
         onConfirm={() => {this.props.delete(this.props.index)}}
         isOpen={this.props.isOpen}
       >

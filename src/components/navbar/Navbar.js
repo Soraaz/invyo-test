@@ -1,13 +1,13 @@
 import React from 'react'
 
 import './Navbar.scss'
-import { debugLog } from '../../lib/logs';
-import { Button, Intent, Navbar as BluePrintNavbar } from '@blueprintjs/core';
-import PropTypes from 'prop-types';
-import { Alignment } from '@blueprintjs/core/lib/esnext/common/alignment';
-import { Link } from 'react-router-dom';
-import App from '../../App';
-import { isMobile } from 'react-device-detect';
+import { debugLog } from '../../lib/logs'
+import { Button, Intent, Navbar as BluePrintNavbar } from '@blueprintjs/core'
+import PropTypes from 'prop-types'
+import { Alignment } from '@blueprintjs/core/lib/esnext/common/alignment'
+import { Link } from 'react-router-dom'
+import App from '../../App'
+import { isMobile } from 'react-device-detect'
 
 /**
    * Navbar class
@@ -17,8 +17,8 @@ class Navbar extends React.Component {
      * Constructor (React lifecycle)
      */
   constructor(props) {
-    debugLog('Navbar::constructor')
     super(props)
+    debugLog('Navbar::constructor')
   }
 
   /**
@@ -67,4 +67,4 @@ Navbar.propTypes = {
   changeIsConnected: PropTypes.func.isRequired
 }
 
-export default Navbar;
+export default Navbar

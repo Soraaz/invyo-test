@@ -1,26 +1,27 @@
 import React from 'react'
 
 import './TaskList.scss'
-import { debugLog } from '../../../lib/logs';
-import PropTypes from 'prop-types';
-import Task from './task/Task';
-import { Card } from '@blueprintjs/core';
+import { debugLog } from '../../../lib/logs'
+import PropTypes from 'prop-types'
+// import Task from './task/Task';
+import { Card } from '@blueprintjs/core'
+import TaskHook from './task/TaskHook'
 
 /**
- * DataList class
- */
+* DataList class
+*/
 class TaskList extends React.Component {
   /**
-   * Constructor (React lifecycle)
-   */
+  * Constructor (React lifecycle)
+  */
   constructor(props) {
     debugLog('DataList::constructor')
     super(props)
   }
 
   /**
-   * Render (React lifecycle)
-   */
+  * Render (React lifecycle)
+  */
   render() {
     debugLog('DataList:render')
 
@@ -28,10 +29,10 @@ class TaskList extends React.Component {
       return (!task.isEnd || this.props.seeEndTask)
     })
     taskList = taskList.map((task, index) => {
-      return (<Task delete={this.props.deleteTask} key={index} index={index} title={task.title} description={task.description} date={task.date} isEnd={task.isEnd} update={this.props.updateTask}/>);
+      return (<TaskHook delete={this.props.deleteTask} key={index} index={index} title={task.title} description={task.description} date={task.date} isEnd={task.isEnd} update={this.props.updateTask}/>)
     })
 
-    return(
+    return (
       <div className="TaskList">
         {taskList.length ?
           <div className="TaskList-header">
@@ -43,8 +44,8 @@ class TaskList extends React.Component {
               <div className="TaskList-options">Options</div>
             </Card>
             {taskList}
-          </div>:
-          <p>Pas de tâches pour le moment !</p> }
+          </div> :
+          <p>Pas de tâches pour le moment !</p>}
       </div>
     )
   }
@@ -57,4 +58,4 @@ TaskList.propTypes = {
   seeEndTask: PropTypes.bool.isRequired
 }
 
-export default TaskList;
+export default TaskList

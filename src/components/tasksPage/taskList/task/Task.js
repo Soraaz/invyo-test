@@ -1,24 +1,24 @@
 import React from 'react'
 
 import './Task.scss'
-import { debugLog } from '../../../../lib/logs';
-import PropTypes from 'prop-types';
-import { Button, ButtonGroup, Card, Intent } from '@blueprintjs/core';
-import { IconNames } from '@blueprintjs/icons';
-import TaskDelete from '../../taskDelete/TaskDelete';
-import TaskUpdate from '../../taskUpdate/TaskUpdate';
-import { isMobile } from 'react-device-detect';
+import { debugLog } from '../../../../lib/logs'
+import PropTypes from 'prop-types'
+import { Button, ButtonGroup, Card, Intent } from '@blueprintjs/core'
+import { IconNames } from '@blueprintjs/icons'
+import TaskDelete from '../../taskDelete/TaskDelete'
+import TaskUpdate from '../../taskUpdate/TaskUpdate'
+import { isMobile } from 'react-device-detect'
 
 /**
- * Data class
- */
+* Data class
+*/
 class Task extends React.Component {
   /**
-   * Constructor (React lifecycle)
-   */
+  * Constructor (React lifecycle)
+  */
   constructor(props) {
-    debugLog('Data::constructor')
     super(props)
+    debugLog('Data::constructor')
 
     this.state = {
       taskUpdate : {
@@ -31,8 +31,8 @@ class Task extends React.Component {
   }
 
   /**
-   * Toggle Update
-   */
+  * Toggle Update
+  */
   toggleUpdate = () => {
     debugLog('Data::toggleUpdate')
     this.setState(state => ({
@@ -45,8 +45,8 @@ class Task extends React.Component {
   }
 
   /**
-   * Toggle delete
-   */
+  * Toggle delete
+  */
   toggleDelete = () => {
     debugLog('Data::toggleDelete')
     this.setState(state => ({
@@ -75,8 +75,8 @@ class Task extends React.Component {
   }
 
   /**
-   * Render (React lifecycle)
-   */
+    * Render (React lifecycle)
+    */
   render() {
     debugLog('Data:render')
     const UpdateTask = <TaskUpdate
@@ -131,4 +131,4 @@ Task.propTypes = {
   index: PropTypes.number.isRequired
 }
 
-export default Task;
+export default Task

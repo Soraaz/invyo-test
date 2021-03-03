@@ -3,9 +3,9 @@ import React from 'react'
 import './TaskCreate.scss'
 
 import PropTypes from 'prop-types'
-import { debugLog } from '../../../lib/logs';
+import { debugLog } from '../../../lib/logs'
 import { Button, ButtonGroup, Classes, Dialog, FormGroup, InputGroup, Intent } from '@blueprintjs/core'
-import { DateInput } from '@blueprintjs/datetime';
+import { DateInput } from '@blueprintjs/datetime'
 import { IconNames } from '@blueprintjs/icons'
 
 /**
@@ -16,8 +16,8 @@ class TaskCreate extends React.Component {
    * Constructor (React lifecycle)
    */
   constructor(props) {
-    debugLog('TaskUpdate::constructor')
     super(props)
+    debugLog('TaskUpdate::constructor')
     this.state = {
       name: {
         data: '',
@@ -172,15 +172,12 @@ class TaskCreate extends React.Component {
             labelFor="new-task-date"
           >
             <DateInput
-              id="new-task-date"
-              intent={this.state.date.valid ? Intent.PRIMARY : Intent.NONE}
               placeholder="Rentre un date de fin à ta tâche..."
               value={this.state.date.data}
               onChange={(e) => this.updateDate(e, 'date')}
               formatDate={date => date.toLocaleDateString()}
               parseDate={str => new Date(str)}
               //    minDate={new Date()}
-              popoverProps={{ inline: true }}
             />
           </FormGroup>
 
@@ -212,4 +209,4 @@ TaskCreate.propTypes = {
   add: PropTypes.func.isRequired
 }
 
-export default TaskCreate;
+export default TaskCreate

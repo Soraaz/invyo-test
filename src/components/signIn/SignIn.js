@@ -1,12 +1,12 @@
 import React from 'react'
 
 import './SignIn.scss'
-import { debugLog } from '../../lib/logs';
-import PropTypes from 'prop-types';
-import { Intent, Card, FormGroup, H1, InputGroup, Button, Tooltip } from '@blueprintjs/core';
-import { IconNames } from '@blueprintjs/icons';
-import { Redirect } from 'react-router-dom';
-import App from '../../App';
+import { debugLog } from '../../lib/logs'
+import PropTypes from 'prop-types'
+import { Intent, Card, FormGroup, H1, InputGroup, Button, Tooltip } from '@blueprintjs/core'
+import { IconNames } from '@blueprintjs/icons'
+import { Redirect } from 'react-router-dom'
+import App from '../../App'
 
 /**
  * SignIn class
@@ -16,8 +16,8 @@ class SignIn extends React.Component {
    * Constructor (React lifecycle)
    */
   constructor(props) {
-    debugLog('SignIn::constructor')
     super(props)
+    debugLog('SignIn::constructor')
 
     this.state = {
       user: {
@@ -37,7 +37,7 @@ class SignIn extends React.Component {
 
   /**
    * Update email
-   * @param {string} e Event
+   * @param {Object} e Event
    * @return {Number} Test error code
    */
   updateEmail = (e) => {
@@ -56,7 +56,7 @@ class SignIn extends React.Component {
 
   /**
    * Update password
-   * @param {string} e Event
+   * @param {Object} e Event
    * @return {Number} Test error code
    */
   updatePassword = (e) => {
@@ -92,7 +92,7 @@ class SignIn extends React.Component {
 
     if (this.state.user.email === 'test@invyo.io' && this.state.user.password === 'test123@') {
       App.showToast(Intent.SUCCESS, 'Tu es connecté ! Passe une bonne journée !')
-      this.props.changeIsConnected(true);
+      this.props.changeIsConnected(true)
     }
     else
       App.showToast(Intent.DANGER, 'Erreur d\'authentification, Regarde si l\'email et le mot de passe sont correct')
@@ -107,7 +107,7 @@ class SignIn extends React.Component {
       <Tooltip content={`${this.state.showPassword ? 'Hide' : 'Show'} Password` }>
         <Button
           icon={this.state.showPassword ? IconNames.UNLOCK : IconNames.LOCK}
-          minimal="true"
+          minimal={true}
           onClick={this.handleShowPassword}
         />
       </Tooltip>
@@ -117,7 +117,7 @@ class SignIn extends React.Component {
         { this.state.isConnected ? <Redirect to="/todo"/> : null }
         <div className="SignIn-center">
           <Card className="SignIn-card">
-            <H1>Login</H1>
+            <H1>Login2</H1>
             <FormGroup
               label="Email:"
               labelFor="SignIn-input"
@@ -147,7 +147,7 @@ class SignIn extends React.Component {
               />
             </FormGroup>
             <div className="SignIn-button">
-              <Button type="button" intent={Intent.PRIMARY} fill="true" text="Login" rightIcon={IconNames.ARROW_RIGHT}
+              <Button type="button" intent={Intent.PRIMARY} fill={true} text="Login" rightIcon={IconNames.ARROW_RIGHT}
                 onClick={this.handleSignIn}/>
             </div>
           </Card>
@@ -162,4 +162,4 @@ SignIn.propTypes = {
   changeIsConnected: PropTypes.func.isRequired
 }
 
-export default SignIn;
+export default SignIn

@@ -1,13 +1,13 @@
 import React from 'react'
 
 import './TasksPage.scss'
-import { debugLog } from '../../lib/logs';
-import { Button, Card, Elevation, H1, Intent } from '@blueprintjs/core';
-import { IconNames } from '@blueprintjs/icons';
-import TaskCreate from './taskCreate/TaskCreate';
-import TaskList from './taskList/TaskList';
-import App from '../../App';
-import { isMobile } from 'react-device-detect';
+import { debugLog } from '../../lib/logs'
+import { Button, Card, Elevation, H1, Intent } from '@blueprintjs/core'
+import { IconNames } from '@blueprintjs/icons'
+import TaskCreate from './taskCreate/TaskCreate'
+import TaskListHook from './taskList/TaskListHook'
+import App from '../../App'
+import { isMobile } from 'react-device-detect'
 
 /**
  * TasksPage class
@@ -17,10 +17,10 @@ class TasksPage extends React.Component {
    * Constructor (React lifecycle)
    */
   constructor(props) {
+    super(props)
     debugLog('TasksPage::constructor')
     const tasks = localStorage.getItem('dataList') !== null ? JSON.parse(localStorage.getItem('dataList')) : []
 
-    super(props)
     this.state = {
       seeEndTask: false,
       tasks: tasks.map((task) => {
@@ -98,7 +98,7 @@ class TasksPage extends React.Component {
 
   /**
    * Update a data
-   * @param {Number} task Data data
+   * @param {Object} task Data data
    * @param {Number} index Index of the data
    */
   updateTask = (task, index) => {
@@ -155,7 +155,7 @@ class TasksPage extends React.Component {
               rightIcon={this.state.seeEndTask ? IconNames.EYE_OFF : IconNames.EYE_ON}
               onClick={this.toggleSeeEndTask}
             >{!isMobile ? this.textShowButton() : null}</Button>
-            <TaskList tasks={this.state.tasks} deleteTask={this.deleteTask} seeEndTask={this.state.seeEndTask} updateTask={this.updateTask}/>
+            <TaskListHook tasks={this.state.tasks} deleteTask={this.deleteTask} seeEndTask={this.state.seeEndTask} updateTask={this.updateTask}/>
           </Card>
         </div>
       </div>
@@ -163,4 +163,4 @@ class TasksPage extends React.Component {
   }
 }
 
-export default TasksPage;
+export default TasksPage

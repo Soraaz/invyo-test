@@ -1,15 +1,15 @@
-import React from 'react';
-import { debugLog } from './lib/logs';
+import React from 'react'
+import { debugLog } from './lib/logs'
 
-import 'normalize.css/normalize.css';
-import '@blueprintjs/icons/lib/css/blueprint-icons.css';
-import '@blueprintjs/core/lib/css/blueprint.css';
-import '@blueprintjs/datetime/lib/css/blueprint-datetime.css';
-import '@blueprintjs/popover2/lib/css/blueprint-popover2.css';
+import 'normalize.css/normalize.css'
+import '@blueprintjs/icons/lib/css/blueprint-icons.css'
+import '@blueprintjs/core/lib/css/blueprint.css'
+import '@blueprintjs/datetime/lib/css/blueprint-datetime.css'
+import '@blueprintjs/popover2/lib/css/blueprint-popover2.css'
 
-import './App.scss';
+import './App.scss'
 import { Toaster } from '@blueprintjs/core'
-import Content from './components/content/Content';
+import Content from './components/content/Content'
 /**
  * App class
  */
@@ -18,8 +18,8 @@ class App extends React.Component {
    * Constructor (React lifecycle)
    */
   constructor (props) {
-    debugLog('App::constructor')
     super(props)
+    debugLog('App::constructor')
     this.toasterRef = React.createRef()
     const isConnected = localStorage.getItem('isConnected') !== null && localStorage.getItem('isConnected') !== 'false'
     this.state = {
@@ -62,17 +62,17 @@ class App extends React.Component {
    * @param bool Boolean true of false for setting isConnected
    */
   changeIsConnected = (bool) => {
-    localStorage.setItem('isConnected', bool);
+    localStorage.setItem('isConnected', bool)
     this.setState({
       isConnected: bool
-    });
+    })
   }
 
   /**
    * Render (React lifecycle)
    */
   render () {
-    debugLog('App::render');
+    debugLog('App::render')
 
     return (
       <div className="App">
@@ -80,8 +80,10 @@ class App extends React.Component {
         </Toaster>
         <Content isConnected={this.state.isConnected} changeIsConnected={this.changeIsConnected}/>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+App.toaster = undefined
+
+export default App
