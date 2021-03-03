@@ -7,6 +7,7 @@ import { IconNames } from '@blueprintjs/icons';
 import TaskCreate from './taskCreate/TaskCreate';
 import TaskList from './taskList/TaskList';
 import App from '../../App';
+import { isMobile } from 'react-device-detect';
 
 /**
  * TasksPage class
@@ -17,7 +18,7 @@ class TasksPage extends React.Component {
    */
   constructor(props) {
     debugLog('TasksPage::constructor')
-    const tasks = localStorage.getItem('taskList') !== null ? JSON.parse(localStorage.getItem('taskList')) : []
+    const tasks = localStorage.getItem('dataList') !== null ? JSON.parse(localStorage.getItem('dataList')) : []
 
     super(props)
     this.state = {
@@ -37,7 +38,7 @@ class TasksPage extends React.Component {
   }
 
   /**
-   * Open a new Task Panel
+   * Open a new Data Panel
    */
   toggleTaskCreate = () => {
     debugLog('TasksPage::toggleTaskCreate')
@@ -51,8 +52,8 @@ class TasksPage extends React.Component {
   }
 
   /**
-   * Handle create new Task
-   * @param {object} task Task
+   * Handle create new Data
+   * @param {object} task Data
    */
   handleTaskCreate = (task) => {
     debugLog('TaskPage::handleTaskCreate')
@@ -61,14 +62,14 @@ class TasksPage extends React.Component {
         ...state,
         tasks: [...state.tasks, task]
       }), () => {
-        localStorage.setItem('taskList', JSON.stringify(this.state.tasks))
+        localStorage.setItem('dataList', JSON.stringify(this.state.tasks))
         App.showToast(Intent.SUCCESS, 'Ta nouvelle tâche a bien été créer !')
       })
     }
   }
 
   /**
-   * Handle create new Task
+   * Handle create new Data
    * Invert SeeEndTask state
    */
   toggleSeeEndTask = () => {
@@ -80,8 +81,8 @@ class TasksPage extends React.Component {
   }
 
   /**
-   * Delete a task
-   * @param {Number} index Index of the task
+   * Delete a data
+   * @param {Number} index Index of the data
    */
   deleteTask = (index) => {
     debugLog('TaskPage::deleteTask')
@@ -90,15 +91,15 @@ class TasksPage extends React.Component {
       tasks:  [...state.tasks.slice(0, index), ...state.tasks.slice(index+1)]
     }), () =>
     {
-      localStorage.setItem('taskList', JSON.stringify(this.state.tasks))
+      localStorage.setItem('dataList', JSON.stringify(this.state.tasks))
       App.showToast(Intent.SUCCESS, 'La tâche a bien été supprimée !')
     })
   }
 
   /**
-   * Update a task
-   * @param {Number} task Task data
-   * @param {Number} index Index of the task
+   * Update a data
+   * @param {Number} task Data data
+   * @param {Number} index Index of the data
    */
   updateTask = (task, index) => {
     debugLog('TaskPage::updateTask')
@@ -115,9 +116,13 @@ class TasksPage extends React.Component {
       ]
     }), () =>
     {
-      localStorage.setItem('taskList', JSON.stringify(this.state.tasks))
+      localStorage.setItem('dataList', JSON.stringify(this.state.tasks))
       App.showToast(Intent.SUCCESS, 'La tâche a bien été modifier !')
     })
+  }
+
+  textShowButton = () => {
+    return <span>{this.state.seeEndTask ? 'Cacher' : 'Voir'} les tâches finis</span>
   }
 
   /**
@@ -143,13 +148,13 @@ class TasksPage extends React.Component {
               intent={Intent.SUCCESS}
               rightIcon={IconNames.ADD}
               onClick={this.toggleTaskCreate}
-            >Nouvelle tâche</Button>
+            >{!isMobile ? 'Nouvelle tâche' : null}</Button>
             <Button
               className="Tasks-view-finish"
               intent={Intent.PRIMARY}
               rightIcon={this.state.seeEndTask ? IconNames.EYE_OFF : IconNames.EYE_ON}
               onClick={this.toggleSeeEndTask}
-            >{this.state.seeEndTask ? 'Cacher' : 'Voir'} les tâches finis</Button>
+            >{!isMobile ? this.textShowButton() : null}</Button>
             <TaskList tasks={this.state.tasks} deleteTask={this.deleteTask} seeEndTask={this.state.seeEndTask} updateTask={this.updateTask}/>
           </Card>
         </div>

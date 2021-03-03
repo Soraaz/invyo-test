@@ -7,16 +7,17 @@ import { Button, ButtonGroup, Card, Intent } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 import TaskDelete from '../../taskDelete/TaskDelete';
 import TaskUpdate from '../../taskUpdate/TaskUpdate';
+import { isMobile } from 'react-device-detect';
 
 /**
- * Task class
+ * Data class
  */
 class Task extends React.Component {
   /**
    * Constructor (React lifecycle)
    */
   constructor(props) {
-    debugLog('Task::constructor')
+    debugLog('Data::constructor')
     super(props)
 
     this.state = {
@@ -33,7 +34,7 @@ class Task extends React.Component {
    * Toggle Update
    */
   toggleUpdate = () => {
-    debugLog('Task::toggleUpdate')
+    debugLog('Data::toggleUpdate')
     this.setState(state => ({
       ...state,
       taskUpdate: {
@@ -47,7 +48,7 @@ class Task extends React.Component {
    * Toggle delete
    */
   toggleDelete = () => {
-    debugLog('Task::toggleDelete')
+    debugLog('Data::toggleDelete')
     this.setState(state => ({
       ...state,
       taskDelete: {
@@ -63,12 +64,12 @@ class Task extends React.Component {
         <Button
           intent={Intent.SUCCESS}
           rightIcon={IconNames.CONFIRM}
-          text="Fini"
+          text={!isMobile ? 'Fini' : null}
         /> :
         <Button
           intent={Intent.PRIMARY}
           rightIcon={IconNames.REFRESH}
-          text="En cours"
+          text={!isMobile ? 'En cours' : null}
         />
     )
   }
@@ -77,7 +78,7 @@ class Task extends React.Component {
    * Render (React lifecycle)
    */
   render() {
-    debugLog('Task:render')
+    debugLog('Data:render')
     const UpdateTask = <TaskUpdate
       isOpen={this.state.taskUpdate.isOpen}
       index={this.props.index}

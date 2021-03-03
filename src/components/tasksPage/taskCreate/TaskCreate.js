@@ -75,7 +75,7 @@ class TaskCreate extends React.Component {
   }
 
   /**
-   * Create a new task
+   * Create a new data
    */
   handleCreate = () => {
     debugLog('TaskUpdate::handleCreate')
@@ -106,8 +106,8 @@ class TaskCreate extends React.Component {
         valid: false
       },
       date: {
-        data: '',
-        valid: false
+        data: new Date(),
+        valid: true
       }
     }), this.props.close)
   }

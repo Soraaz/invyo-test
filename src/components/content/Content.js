@@ -8,7 +8,7 @@ import SignIn from '../signIn/SignIn';
 import PropTypes from 'prop-types';
 import TasksPage from '../tasksPage/TasksPage';
 import Navbar from '../navbar/Navbar';
-import Datas from '../datas/Datas';
+import DataPage from '../dataPage/DataPage';
 
 /**
  * Content class
@@ -34,7 +34,7 @@ class Content extends React.Component {
           <Navbar isConnected={this.props.isConnected} changeIsConnected={this.props.changeIsConnected} />
           <Switch>
             {!this.props.isConnected ? <Route path={'/login'} component={() => <SignIn isConnected={this.props.isConnected} changeIsConnected={this.props.changeIsConnected} />} /> : null}
-            {this.props.isConnected ? <Route path={'/data'} component={Datas} /> : null }
+            {this.props.isConnected ? <Route path={'/data'} component={DataPage} /> : null }
             {this.props.isConnected ? <Route path={'/todo'} component={TasksPage} /> : null }
             {!this.props.isConnected
               ? <Route path={'/'} component={() => <SignIn isConnected={this.props.isConnected}

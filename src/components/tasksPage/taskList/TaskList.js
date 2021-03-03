@@ -7,14 +7,14 @@ import Task from './task/Task';
 import { Card } from '@blueprintjs/core';
 
 /**
- * TaskList class
+ * DataList class
  */
 class TaskList extends React.Component {
   /**
    * Constructor (React lifecycle)
    */
   constructor(props) {
-    debugLog('TaskList::constructor')
+    debugLog('DataList::constructor')
     super(props)
   }
 
@@ -22,7 +22,7 @@ class TaskList extends React.Component {
    * Render (React lifecycle)
    */
   render() {
-    debugLog('TaskList:render')
+    debugLog('DataList:render')
 
     let taskList = this.props.tasks.filter((task) => {
       return (!task.isEnd || this.props.seeEndTask)

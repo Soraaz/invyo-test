@@ -1,0 +1,31 @@
+.DataList{
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+}
+
+.DataList-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.DataList-header {
+  flex: 1;
+}
+
+.DataList-name {
+  font-weight: bold;
+  flex: 2;
+}
+
+.DataList-options {
+  font-weight: bold;
+  flex: 1;
+}
+
+.DataList-pagination {
+  margin: 20px;
+}
