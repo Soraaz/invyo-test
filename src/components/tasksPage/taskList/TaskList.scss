@@ -10,7 +10,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding: 20px;
 }
 
 .TaskList-header {
@@ -20,6 +20,15 @@
 .TaskList-name {
   font-weight: bold;
   flex: 2;
+  display: flex;
+  justify-content: center;
+}
+
+.TaskList-content {
+  font-weight: bold;
+  flex: 2;
+  display: flex;
+  justify-content: stretch;
 }
 
 .TaskList-options {

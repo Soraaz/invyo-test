@@ -51,7 +51,7 @@ function ProgressBarWithLabel(props) {
         {seconds <= 0 && <GreenProgressBar variant="determinate" {...props} value={0} color="primary" />}
         {seconds > 0 && days <= 0 && <RedProgressBar variant="determinate" {...props} value={(24 - hour) * 4} color="primary" />}
         {days < 30 && days > 0 && <LinearProgress variant="determinate" {...props} value={(30 - days) * 3} color="primary" />}
-        {days > 30 && <GreyProgressBar variant="determinate" {...props} value={(358 - days) / 4} color="primary" />}
+        {days >= 30 && <GreyProgressBar variant="determinate" {...props} value={(365 - days) / 4} color="primary" />}
       </Box>
       <Box minWidth={35}>
         {seconds <= 0 ? <CheckIcon style={{ color: green[500] }} /> : view}

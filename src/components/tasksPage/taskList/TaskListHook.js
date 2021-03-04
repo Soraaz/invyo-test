@@ -20,11 +20,11 @@ function TaskListHook (props){
     return (!task.isEnd || props.seeEndTask)
   })
 
-  TaskListHook = TaskListHook.sort((dataA, dataB) => new Date(stringToDate(dataA.date)) > new Date(stringToDate(dataB.date)) ? 1 : -1)
-
-  TaskListHook = TaskListHook.map((task) => {
-    return (<TaskHook delete={props.deleteTask} key={task.id} index={task.id} title={task.title} description={task.description} date={task.date} isEnd={task.isEnd} update={props.updateTask}/>)
+  TaskListHook = TaskListHook.map((task, index) => {
+    return (<TaskHook delete={props.deleteTask} key={task.id} index={index} title={task.title} description={task.description} date={task.date} isEnd={task.isEnd} update={props.updateTask}/>)
   })
+
+  TaskListHook = TaskListHook.sort((dataA, dataB) => new Date(stringToDate(dataA.props.date)) > new Date(stringToDate(dataB.props.date)) ? 1 : -1)
 
   return (
     <div className="TaskList">
@@ -34,7 +34,7 @@ function TaskListHook (props){
             <div className="TaskList-name">Titre</div>
             <div className="TaskList-name">Description</div>
             <div className="TaskList-name">Date de fin</div>
-            <div className="TaskList-name">Status</div>
+            <div className="TaskList-content">Status</div>
             <div className="TaskList-options">Options</div>
           </Card>}
           {TaskListHook}

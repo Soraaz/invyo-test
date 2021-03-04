@@ -86,7 +86,7 @@ function TaskHook(props) {
         <div className="TaskItem-name">{props.date}</div>
         <div className="TaskItem-name">{showIsEnd()}</div>
 
-        <ButtonGroup>
+        <ButtonGroup className="TaskItem-options">
 		  <Button
             variant="contained"
             color="default"

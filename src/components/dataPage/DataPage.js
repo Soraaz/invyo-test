@@ -5,6 +5,7 @@ import { debugLog } from '../../lib/logs'
 import { Card, Elevation, H1, HTMLSelect } from '@blueprintjs/core'
 // import { isMobile } from 'react-device-detect';
 import DataList from './dataList/DataList'
+// @ts-ignore
 import datas from '../../data/data.js'
 import Network from './network/Network'
 
