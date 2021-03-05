@@ -75,7 +75,7 @@ function DataListHook (props) {
   // Search Filter
   dataList = dataList.filter((data) => {
     const title = data.title.toLowerCase()
-    const content = data.title.toLowerCase()
+    const content = data.content.toLowerCase()
     return (title.includes(props.filterSearch) || content.includes(props.filterSearch))
   })
 
