@@ -2,13 +2,12 @@ import React , { useState } from 'react'
 
 import './DataPage.scss'
 import { debugLog } from '../../lib/logs'
-import { Card, Elevation } from '@blueprintjs/core'
 import MultiSelectHook from '../../lib/material-ui/MultiSelectHook'
 import DataListHook from './dataList/DataListHook'
 // @ts-ignore
 import datasFile from '../../data/data.js'
-import Network from './network/Network'
-import { InputLabel, MenuItem, Select, TextField, makeStyles, FormControl, OutlinedInput, Typography } from '@material-ui/core'
+import NetworkHook from './network/NetworkHook'
+import { InputLabel, MenuItem, Select, TextField, makeStyles, FormControl, OutlinedInput, Typography, Paper } from '@material-ui/core'
 
 // Order enum
 export const FilterOrder = {
@@ -24,6 +23,9 @@ const useStyles = makeStyles(() => ({
   formControl: {
     minWidth: 120,
     minHeight: 60
+  },
+  orderBy: {
+    width: '120px'
   }
 }))
 
@@ -98,7 +100,7 @@ function DataPageHook () {
    */
   function updateSearch (e) {
     debugLog('DataPage::updateSearch')
-    if (e.target.value && e.target.value.length > 0 && e.target.value.length < 255)
+    if (e.target && e.target.value.length >= 0 && e.target.value.length < 255)
     {
       setSearchValue(e.target.value.toLowerCase())
     }
@@ -134,76 +136,78 @@ function DataPageHook () {
   return(
     <div className="Datas" >
       <div className="Datas-center">
-        <Typography variant="h4">Mes données</Typography>
 
-        <Card elevation={Elevation.TWO} className="Datas-tools" >
+        <Paper className="Datas-tools" >
 
-          <div className="Datas-tools-single">
-            <TextField
-              label="Recherche:"
-              placeholder="Potatoes"
-              variant="outlined"
-              InputLabelProps={{
-                shrink: true
-              }}
-              onChange={updateSearch}
-            />
-          </div>
+          <div>
+            <Typography variant="h4" style={{ marginBottom: '20px' }}>Mes données</Typography>
 
-          <div className="Datas-tools-single">
-            <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel shrink>
+            <div className="Datas-tools-single">
+              <TextField
+                label="Recherche:"
+                placeholder="Potatoes"
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true
+                }}
+                onChange={updateSearch}
+              />
+            </div>
+
+            <div className="Datas-tools-single">
+              <FormControl variant="outlined" className={classes.orderBy}>
+                <InputLabel shrink>
                  Ordonner par:
-              </InputLabel>
-              <Select
-                input={<OutlinedInput notched label="Ordonner par :" />}
-                labelId="demo-simple-select-outlined-label"
-                variant="outlined"
-                onChange={handleOrder}
-                value={order}
-              >
-                <MenuItem value={FilterOrder.Index}>Index</MenuItem>
-                <MenuItem value={FilterOrder.IndexDesc}>Index inversé</MenuItem>
-                <MenuItem value={FilterOrder.TitleAsc} >Alphabétique par le Titre</MenuItem>
-                <MenuItem value={FilterOrder.TitleDesc} >Alphabétique inversé par le Titre</MenuItem>
-                <MenuItem value={FilterOrder.ContentAsc} >Alphabétique par le Contenu</MenuItem>
-                <MenuItem value={FilterOrder.ContentDesc} >Alphabétique inversé par le Contenu</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
+                </InputLabel>
+                <Select
+                  input={<OutlinedInput notched label="Ordonner par :" />}
+                  labelId="demo-simple-select-outlined-label"
+                  variant="outlined"
+                  onChange={handleOrder}
+                  value={order}
+                >
+                  <MenuItem value={FilterOrder.Index}>Index</MenuItem>
+                  <MenuItem value={FilterOrder.IndexDesc}>Index inversé</MenuItem>
+                  <MenuItem value={FilterOrder.TitleAsc} >Alphabétique par le Titre</MenuItem>
+                  <MenuItem value={FilterOrder.TitleDesc} >Alphabétique inversé par le Titre</MenuItem>
+                  <MenuItem value={FilterOrder.ContentAsc} >Alphabétique par le Contenu</MenuItem>
+                  <MenuItem value={FilterOrder.ContentDesc} >Alphabétique inversé par le Contenu</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
 
-          <div className="Datas-tools-single">
-            <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel shrink>
+            <div className="Datas-tools-single">
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel shrink>
                   Trier par langue:
-              </InputLabel>
-              <Select
-                input={<OutlinedInput notched label="Trier par langue:" />}
-                labelId="demo-simple-select-outlined-label"
-                variant="outlined"
-                onChange={handleFilterLanguage}
-                value={filterLanguage}
-              >
-                <MenuItem value="" >Toutes</MenuItem>
-                {
-                  languages.map((language, index) => {
-                    return <MenuItem key={index + 1} value={language}>{language}</MenuItem>
-                  })
-                }
-              </Select>
-            </FormControl>
-          </div>
+                </InputLabel>
+                <Select
+                  input={<OutlinedInput notched label="Trier par langue:" />}
+                  labelId="demo-simple-select-outlined-label"
+                  variant="outlined"
+                  onChange={handleFilterLanguage}
+                  value={filterLanguage}
+                >
+                  <MenuItem value="" >Toutes</MenuItem>
+                  {
+                    languages.map((language, index) => {
+                      return <MenuItem key={index + 1} value={language}>{language}</MenuItem>
+                    })
+                  }
+                </Select>
+              </FormControl>
+            </div>
 
-          <div className="Datas-tools-single">
-            <FormControl variant="outlined" className={classes.formControl}>
-              <MultiSelectHook datas={tags} reloadData={handleFilterTag} label="Trier par tags:"/>
-            </FormControl>
+            <div className="Datas-tools-single">
+              <FormControl variant="outlined" className={classes.formControl}>
+                <MultiSelectHook datas={tags} reloadData={handleFilterTag} label="Trier par tags:"/>
+              </FormControl>
+            </div>
           </div>
-
-        </Card>
+        </Paper>
 
         <DataListHook datas={datas} order={order} filterLanguage={filterLanguage} filterTag={filterTag} filterSearch={searchValue} />
-        <Network network={network}/>
+        <NetworkHook network={network}/>
       </div>
     </div>
   )

@@ -5,7 +5,6 @@ import { debugLog } from '../../../../lib/logs'
 import PropTypes from 'prop-types'
 import { Button, Card, Intent, Tag } from '@blueprintjs/core'
 import { IconNames } from '@blueprintjs/icons'
-// import { isMobile } from 'react-device-detect';
 
 /**
  * Data class

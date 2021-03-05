@@ -1,12 +1,20 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import './DataList.scss'
 import { debugLog } from '../../../lib/logs'
 import PropTypes from 'prop-types'
-import Data from './data/Data'
-import { Card } from '@blueprintjs/core'
+import DataHook from './data/DataHook'
 import { FilterOrder } from '../DataPageHook'
-import { TableFooter, TablePagination, TableRow } from '@material-ui/core'
+import { makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@material-ui/core'
+
+const useStyles = makeStyles({
+  root: {
+    width: '100%'
+  },
+  container: {
+    maxHeight: '60vh'
+  }
+})
 
 /**
  * DataListHook class
@@ -14,10 +22,16 @@ import { TableFooter, TablePagination, TableRow } from '@material-ui/core'
 function DataListHook (props) {
   debugLog('DataList:render')
 
+  const classes = useStyles()
+
   let dataList = props.datas
 
   const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(4)
+  const [rowsPerPage, setRowsPerPage] = useState(10)
+
+  useEffect(() => {
+    setPage(0)
+  }, [props.filterLanguage, props.filterTag, props.filterSearch])
 
   /**
    * Handle page change pagination
@@ -90,41 +104,49 @@ function DataListHook (props) {
   // Creating map
   dataList = dataList.map((data, index) => {
     if (index >= (page * rowsPerPage) && index < (page * rowsPerPage) + rowsPerPage)
-      return (<Data key={index} index={index} title={data.title} content={data.content} date={data.date} language={data.language} url={data.url} tags={data.tags}/>)
+      return (<DataHook key={index} index={index} title={data.title} content={data.content} date={data.date} language={data.language} url={data.url} tags={data.tags}/>)
   })
 
   // Render
   return(
     <div className="DataList">
-      {dataList.length ?
-        <div className="DataList-block">
-          <Card className="DataList-header">
-            <div className="DataList-name">Titre</div>
-            <div className="DataList-name">Contenu</div>
-            <div className="DataList-name">Langue</div>
-            <div className="DataList-name">Tags</div>
-            <div className="DataList-options">Actions</div>
-          </Card>
-          <div className="DataList-list">
-            {dataList}
-          </div>
+      <div className="DataList-block">
+        {dataList.length ?
+          <Paper className={classes.root}>
+            <TableContainer className={classes.container}>
+              <Table stickyHeader >
+                <TableHead>
+                  <TableRow>
+                    <TableCell className="DataList-name" align="left" style={{ minWidth: 170 }}>Titre</TableCell>
+                    <TableCell className="DataList-name" align="left" style={{ minWidth: 170 }}>Contenu</TableCell>
+                    <TableCell className="DataList-name" align="center" style={{ minWidth: 170 }}>Langue</TableCell>
+                    <TableCell className="DataList-name" align="center" style={{ minWidth: 170 }}>Tags</TableCell>
+                    <TableCell className="DataList-name" align="center" style={{ minWidth: 170 }}>Actions</TableCell>
+                  </TableRow>
+                </TableHead>
 
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                rowsPerPageOptions={[4, 10, 25, 50, 100]}
-                component="div"
-                count={dataList.length}
-                page={page}
-                onChangePage={handleChangePage}
-                rowsPerPage={rowsPerPage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
-              />
-            </TableRow>
-          </TableFooter>
+                <TableBody aria-label="sticky table">
+                  {dataList}
+                </TableBody>
 
-        </div>:
-        <p>Pas de datas pour le moment !</p> }
+              </Table>
+            </TableContainer>
+
+            <TablePagination
+              component="div"
+              rowsPerPageOptions={[4, 10, 25, 50, 100]}
+              count={dataList.length}
+              page={page}
+              onChangePage={handleChangePage}
+              rowsPerPage={rowsPerPage}
+              onChangeRowsPerPage={handleChangeRowsPerPage}
+            />
+          </Paper>
+          :
+          <Paper className={classes.root}>
+            <Typography variant="h6">Pas de datas trouvées avec ces options !</Typography>
+          </Paper>}
+      </div>
     </div>
   )
 }

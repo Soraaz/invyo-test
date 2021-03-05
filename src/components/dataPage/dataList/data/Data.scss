@@ -7,13 +7,17 @@
 }
 
 .DataItem-name {
-  flex: 2;
   word-break: break-all;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   margin: 10px;
+
+  max-width: 20em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .DataItem-options {
