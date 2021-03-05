@@ -2,17 +2,26 @@ import React , { useState } from 'react'
 
 import './DataPage.scss'
 import { debugLog } from '../../lib/logs'
-import { Card, Elevation, H1, HTMLSelect } from '@blueprintjs/core'
+import { Card, Elevation } from '@blueprintjs/core'
 import MultiSelectHook from '../../lib/material-ui/MultiSelectHook'
 import DataListHook from './dataList/DataListHook'
 // @ts-ignore
 import datasFile from '../../data/data.js'
 import Network from './network/Network'
-import { InputLabel, MenuItem, Select, TextField, makeStyles, FormControl, OutlinedInput } from '@material-ui/core'
+import { InputLabel, MenuItem, Select, TextField, makeStyles, FormControl, OutlinedInput, Typography } from '@material-ui/core'
 
-const useStyles = makeStyles((theme) => ({
+// Order enum
+export const FilterOrder = {
+  Index : 0,
+  TitleAsc : 1,
+  TitleDesc : 2,
+  ContentAsc : 3,
+  ContentDesc : 4,
+  IndexDesc : 5
+}
+
+const useStyles = makeStyles(() => ({
   formControl: {
-    margin: theme.spacing(1),
     minWidth: 120,
     minHeight: 60
   }
@@ -39,7 +48,7 @@ function DataPageHook () {
     })
   })
   const [network] = useState(datasFile.network)
-  const [order, setOrder] = useState('Index')
+  const [order, setOrder] = useState(FilterOrder.Index)
   const [tags] = useState(getTags(datas))
   const [languages] = useState(getLanguage(datas))
   const [filterLanguage, setFilterLanguage] = useState('')
@@ -125,68 +134,76 @@ function DataPageHook () {
   return(
     <div className="Datas" >
       <div className="Datas-center">
-        <Card className="Datas-card" elevation={Elevation.TWO}>
-          <H1>Mes données</H1>
+        <Typography variant="h4">Mes données</Typography>
 
-          <Card elevation={Elevation.TWO} className="Datas-tools" >
+        <Card elevation={Elevation.TWO} className="Datas-tools" >
 
-            <div className="Datas-tools-single">
-              <TextField
-                label="Recherche:"
-                placeholder="Potatoes"
-                margin="normal"
+          <div className="Datas-tools-single">
+            <TextField
+              label="Recherche:"
+              placeholder="Potatoes"
+              variant="outlined"
+              InputLabelProps={{
+                shrink: true
+              }}
+              onChange={updateSearch}
+            />
+          </div>
+
+          <div className="Datas-tools-single">
+            <FormControl variant="outlined" className={classes.formControl}>
+              <InputLabel shrink>
+                 Ordonner par:
+              </InputLabel>
+              <Select
+                input={<OutlinedInput notched label="Ordonner par :" />}
+                labelId="demo-simple-select-outlined-label"
                 variant="outlined"
-                InputLabelProps={{
-                  shrink: true
-                }}
-                onChange={updateSearch}
-              />
-            </div>
+                onChange={handleOrder}
+                value={order}
+              >
+                <MenuItem value={FilterOrder.Index}>Index</MenuItem>
+                <MenuItem value={FilterOrder.IndexDesc}>Index inversé</MenuItem>
+                <MenuItem value={FilterOrder.TitleAsc} >Alphabétique par le Titre</MenuItem>
+                <MenuItem value={FilterOrder.TitleDesc} >Alphabétique inversé par le Titre</MenuItem>
+                <MenuItem value={FilterOrder.ContentAsc} >Alphabétique par le Contenu</MenuItem>
+                <MenuItem value={FilterOrder.ContentDesc} >Alphabétique inversé par le Contenu</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
 
-            <div className="Datas-tools-single">
-              <p>Ranger par:</p>
-              <div className="bp3-select .modifier" >
-                <HTMLSelect defaultValue={1} onChange={handleOrder}>
-                  <option>Index</option>
-                  <option>Alphabétique par le Titre</option>
-                  <option>Alphabétique par le Contenu</option>
-                </HTMLSelect>
-              </div>
-            </div>
-
-            <div className="Datas-tools-single">
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel shrink>
+          <div className="Datas-tools-single">
+            <FormControl variant="outlined" className={classes.formControl}>
+              <InputLabel shrink>
                   Trier par langue:
-                </InputLabel>
-                <Select
-                  input={<OutlinedInput notched label="Trier par langue:" />}
-                  labelId="demo-simple-select-outlined-label"
-                  variant="outlined"
-                  onChange={handleFilterLanguage}
-                  value={filterLanguage}
-                >
-                  <MenuItem value="" >Toutes</MenuItem>
-                  {
-                    languages.map((language, index) => {
-                      return <MenuItem key={index + 1} value={language}>{language}</MenuItem>
-                    })
-                  }
-                </Select>
-              </FormControl>
-            </div>
+              </InputLabel>
+              <Select
+                input={<OutlinedInput notched label="Trier par langue:" />}
+                labelId="demo-simple-select-outlined-label"
+                variant="outlined"
+                onChange={handleFilterLanguage}
+                value={filterLanguage}
+              >
+                <MenuItem value="" >Toutes</MenuItem>
+                {
+                  languages.map((language, index) => {
+                    return <MenuItem key={index + 1} value={language}>{language}</MenuItem>
+                  })
+                }
+              </Select>
+            </FormControl>
+          </div>
 
-            <div className="Datas-tools-single">
-              <FormControl variant="outlined" className={classes.formControl}>
-                <MultiSelectHook datas={tags} reloadData={handleFilterTag} label="Trier par tags:"/>
-              </FormControl>
-            </div>
+          <div className="Datas-tools-single">
+            <FormControl variant="outlined" className={classes.formControl}>
+              <MultiSelectHook datas={tags} reloadData={handleFilterTag} label="Trier par tags:"/>
+            </FormControl>
+          </div>
 
-          </Card>
-
-          <DataListHook datas={datas} order={order} filterLanguage={filterLanguage} filterTag={filterTag} filterSearch={searchValue} />
-          <Network network={network}/>
         </Card>
+
+        <DataListHook datas={datas} order={order} filterLanguage={filterLanguage} filterTag={filterTag} filterSearch={searchValue} />
+        <Network network={network}/>
       </div>
     </div>
   )

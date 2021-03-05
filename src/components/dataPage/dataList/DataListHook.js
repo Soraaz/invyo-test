@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
 import './DataList.scss'
 import { debugLog } from '../../../lib/logs'
 import PropTypes from 'prop-types'
 import Data from './data/Data'
-import { Button, Card, Intent } from '@blueprintjs/core'
-import { IconNames } from '@blueprintjs/icons'
+import { Card } from '@blueprintjs/core'
+import { FilterOrder } from '../DataPageHook'
+import { TableFooter, TablePagination, TableRow } from '@material-ui/core'
 
 /**
  * DataListHook class
@@ -15,32 +16,25 @@ function DataListHook (props) {
 
   let dataList = props.datas
 
-  const [minIndex, setMinIndex] = useState(0)
-  const [maxIndex, setMaxIndex] = useState(4)
-
-  useEffect(() => {
-    setMinIndex(0)
-    setMaxIndex(4)
-  }, [props.filterTag, props.filterLanguage])
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(4)
 
   /**
-   * Load Previous page
+   * Handle page change pagination
+   * @param {Object} event Event
+   * @param {Number} newPage new Page number
    */
-  function previousPage () {
-    if (minIndex !== 0) {
-      setMinIndex(minIndex - 4)
-      setMaxIndex(maxIndex - 4)
-    }
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage)
   }
 
   /**
-   * Load Next page
+   * Handle numbers of items per page
+   * @param {Object} event Event
    */
-  function nextPage () {
-    if (maxIndex + 1 <= dataList.length) {
-      setMinIndex(minIndex + 4)
-      setMaxIndex(maxIndex +4)
-    }
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10))
+    setPage(0)
   }
 
   // Tag Filter
@@ -72,16 +66,30 @@ function DataListHook (props) {
   })
 
   // Order
-  if (props.order === 'Alphabétique par le Titre')
+  switch(props.order){
+  case FilterOrder.TitleAsc:
     dataList = dataList.sort((dataA, dataB) => dataA.title > dataB.title ? 1 : -1)
-  else if (props.order === 'Alphabétique par le Contenu')
+    break
+  case FilterOrder.TitleDesc:
+    dataList = dataList.sort((dataA, dataB) => dataA.title <= dataB.title ? 1 : -1)
+    break
+  case FilterOrder.ContentAsc:
     dataList = dataList.sort((dataA, dataB) => dataA.content > dataB.content ? 1 : -1)
-  else
+    break
+  case FilterOrder.ContentDesc:
+    dataList = dataList.sort((dataA, dataB) => dataA.content <= dataB.content ? 1 : -1)
+    break
+  case FilterOrder.IndexDesc:
+    dataList = dataList.sort((dataA, dataB) => dataA.baseIndex <= dataB.baseIndex ? 1 : -1)
+    break
+  default:
     dataList = dataList.sort((dataA, dataB) => dataA.baseIndex > dataB.baseIndex ? 1 : -1)
+    break
+  }
 
   // Creating map
   dataList = dataList.map((data, index) => {
-    if (index < maxIndex && index >= minIndex)
+    if (index >= (page * rowsPerPage) && index < (page * rowsPerPage) + rowsPerPage)
       return (<Data key={index} index={index} title={data.title} content={data.content} date={data.date} language={data.language} url={data.url} tags={data.tags}/>)
   })
 
@@ -89,8 +97,8 @@ function DataListHook (props) {
   return(
     <div className="DataList">
       {dataList.length ?
-        <div className="DataList-header">
-          <Card className="DataList-card">
+        <div className="DataList-block">
+          <Card className="DataList-header">
             <div className="DataList-name">Titre</div>
             <div className="DataList-name">Contenu</div>
             <div className="DataList-name">Langue</div>
@@ -101,21 +109,19 @@ function DataListHook (props) {
             {dataList}
           </div>
 
-          <div className="DataList-pagination">
-            <Button
-              intent={Intent.NONE}
-              icon={IconNames.ARROW_LEFT}
-              onClick={previousPage}
-              disabled={minIndex === 0}
-            />
-            <Button
-              intent={Intent.NONE}
-              icon={IconNames.ARROW_RIGHT}
-              onClick={nextPage}
-              disabled={maxIndex + 1 > dataList.length}
-            />
-            <span className="Datas-pagination">{minIndex} - {maxIndex} of {dataList.length}</span>
-          </div>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={[4, 10, 25, 50, 100]}
+                component="div"
+                count={dataList.length}
+                page={page}
+                onChangePage={handleChangePage}
+                rowsPerPage={rowsPerPage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+              />
+            </TableRow>
+          </TableFooter>
 
         </div>:
         <p>Pas de datas pour le moment !</p> }
@@ -125,7 +131,7 @@ function DataListHook (props) {
 
 DataListHook.propTypes = {
   datas: PropTypes.array.isRequired,
-  order: PropTypes.string.isRequired,
+  order: PropTypes.number.isRequired,
   filterLanguage: PropTypes.string.isRequired,
   filterTag: PropTypes.array.isRequired,
   filterSearch: PropTypes.string.isRequired

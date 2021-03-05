@@ -12,8 +12,14 @@
   align-items: center;
 }
 
-.DataList-header {
+.DataList-block {
   flex: 1;
+}
+
+
+.DataList-header {
+  display: flex;
+  margin: 10px;
 }
 
 .DataList-name {
@@ -26,6 +32,8 @@
   flex: 1;
 }
 
-.DataList-pagination {
-  margin: 20px;
+.DataList-list {
+  padding: 10px;
+  height: 53vh;
+  overflow: auto;
 }

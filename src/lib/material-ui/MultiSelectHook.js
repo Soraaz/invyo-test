@@ -134,7 +134,6 @@ function MultiSelectHook(props) {
             renderInput={(params) => (
               <TextField
                 label={props.label}
-                margin="normal"
                 variant="outlined"
                 {...params}
                 InputLabelProps={{

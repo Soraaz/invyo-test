@@ -7,3 +7,12 @@
   text-align: center;
   overflow: auto;
 }
+
+.Content::-webkit-scrollbar {
+  display: none;
+}
+
+.Content {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
