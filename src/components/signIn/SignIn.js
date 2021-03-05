@@ -117,7 +117,7 @@ class SignIn extends React.Component {
         { this.state.isConnected ? <Redirect to="/todo"/> : null }
         <div className="SignIn-center">
           <Card className="SignIn-card">
-            <H1>Login2</H1>
+            <H1>Login</H1>
             <FormGroup
               label="Email:"
               labelFor="SignIn-input"
