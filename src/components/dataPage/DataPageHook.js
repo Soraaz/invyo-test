@@ -6,7 +6,6 @@ import MultiSelectHook from '../../lib/material-ui/MultiSelectHook'
 import DataListHook from './dataList/DataListHook'
 // @ts-ignore
 import datasFile from '../../data/data.js'
-import NetworkHook from './network/NetworkHook'
 import { InputLabel, MenuItem, Select, TextField, makeStyles, FormControl, OutlinedInput, Typography, Paper } from '@material-ui/core'
 
 // Order enum
@@ -49,7 +48,6 @@ function DataPageHook () {
       })
     })
   })
-  const [network] = useState(datasFile.network)
   const [order, setOrder] = useState(FilterOrder.Index)
   const [tags] = useState(getTags(datas))
   const [languages] = useState(getLanguage(datas))
@@ -207,7 +205,6 @@ function DataPageHook () {
         </Paper>
 
         <DataListHook datas={datas} order={order} filterLanguage={filterLanguage} filterTag={filterTag} filterSearch={searchValue} />
-        <NetworkHook network={network}/>
       </div>
     </div>
   )

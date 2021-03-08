@@ -2,31 +2,44 @@ import React from 'react'
 
 import './Network.scss'
 import { debugLog } from '../../../lib/logs'
-import { H1 } from '@blueprintjs/core'
 import Graph from 'react-graph-vis'
-import PropTypes from 'prop-types'
-import { Paper } from '@material-ui/core'
+import { Paper, Typography } from '@material-ui/core'
+// @ts-ignore
+import datasFile from '../../../data/data'
 
 /**
  * NetworkHook class
  */
-function NetworkHook (props) {
+function NetworkHook () {
   debugLog('Network::constructor')
 
   const graph = {
-    nodes: props.network.nodes,
-    edges: props.network.edges
+    nodes: datasFile.network.nodes,
+    edges: datasFile.network.edges
   }
 
   const options = {
     autoResize: true,
     layout: {
-      hierarchical: true
+      hierarchical: false
     },
     edges: {
       color: '#000000'
     },
-    height: '500px'
+    height: '700px',
+    nodes: {
+      shape: 'dot',
+      scaling: {
+        /**
+        * Scalling function
+        */
+        customScalingFunction: function (min, max, total, value) {
+          return (value / total) * 2
+        },
+        min: 5,
+        max: 150
+      }
+    }
   }
 
   const events = {
@@ -36,7 +49,7 @@ function NetworkHook (props) {
 
   return(
     <Paper className="Network">
-      <H1>Network</H1>
+      <Typography variant="h4">Network</Typography>
       <Graph
         graph={graph}
         options={options}
@@ -45,10 +58,6 @@ function NetworkHook (props) {
       />
     </Paper>
   )
-}
-
-NetworkHook.propTypes = {
-  network: PropTypes.object.isRequired
 }
 
 export default NetworkHook

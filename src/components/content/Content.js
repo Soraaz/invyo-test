@@ -9,6 +9,7 @@ import PropTypes from 'prop-types'
 import TasksPageHook from '../tasksPage/TasksPageHook'
 import Navbar from '../navbar/Navbar'
 import DataPageHook from '../dataPage/DataPageHook'
+import NetworkHook from 'components/dataPage/network/NetworkHook'
 
 /**
  * Content class
@@ -35,6 +36,7 @@ class Content extends React.Component {
           <Switch>
             {!this.props.isConnected ? <Route path={'/login'} component={() => <SignIn isConnected={this.props.isConnected} changeIsConnected={this.props.changeIsConnected} />} /> : null}
             {this.props.isConnected ? <Route path={'/data'} component={DataPageHook} /> : null}
+            {this.props.isConnected ? <Route path={'/network'} component={NetworkHook} /> : null}
             {this.props.isConnected ? <Route path={'/todo'} component={TasksPageHook} /> : null}
             {!this.props.isConnected
               ? <Route path={'/'} component={() => <SignIn isConnected={this.props.isConnected}

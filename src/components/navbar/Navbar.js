@@ -46,6 +46,7 @@ class Navbar extends React.Component {
                 <div>
                   <Link to="/data" style={{ color: 'inherit', textDecoration: 'inherit' }}><Button className="bp3-minimal" icon="box" text={!isMobile ? 'Articles' : null}/></Link>
                   <Link to="/todo" style={{ color: 'inherit', textDecoration: 'inherit' }}><Button className="bp3-minimal" icon="document" text={!isMobile ? 'Mes tâches' : null}/></Link>
+                  <Link to="/network" style={{ color: 'inherit', textDecoration: 'inherit' }}><Button className="bp3-minimal" icon="globe-network" text={!isMobile ? 'Network' : null}/></Link>
                 </div>
                 : null
             }

@@ -3,7 +3,7 @@ import React from 'react'
 import './Data.scss'
 import { debugLog } from '../../../../lib/logs'
 import PropTypes from 'prop-types'
-import { Chip, TableCell, TableRow } from '@material-ui/core'
+import { Chip, IconButton, TableCell, TableRow } from '@material-ui/core'
 
 import InsertLinkIcon from '@material-ui/icons/InsertLink'
 
@@ -33,7 +33,7 @@ function DataHook (props) {
       <TableCell align="center" className="DataItem-name"> {props.language} </TableCell>
       <TableCell align="center"> {dataTags} </TableCell>
       <TableCell align="center" >
-        <InsertLinkIcon color="primary" onClick={() => window.open(props.url, '_blank')} />
+        <IconButton onClick={() => window.open(props.url, '_blank')}><InsertLinkIcon color="primary" /></IconButton>
       </TableCell>
     </TableRow>
 
