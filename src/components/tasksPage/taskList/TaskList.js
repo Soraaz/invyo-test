@@ -43,7 +43,9 @@ class TaskList extends React.Component {
               <div className="TaskList-name">Tâche fini</div>
               <div className="TaskList-options">Options</div>
             </Card>
-            {taskList}
+            <div className="TaskList-content">
+              {taskList}
+            </div>
           </div> :
           <p>Pas de tâches pour le moment !</p>}
       </div>

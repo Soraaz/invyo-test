@@ -1,15 +1,51 @@
 import React from 'react'
 import { debugLog } from './lib/logs'
 
-import 'normalize.css/normalize.css'
-import '@blueprintjs/icons/lib/css/blueprint-icons.css'
-import '@blueprintjs/core/lib/css/blueprint.css'
-import '@blueprintjs/datetime/lib/css/blueprint-datetime.css'
-import '@blueprintjs/popover2/lib/css/blueprint-popover2.css'
-
 import './App.scss'
-import { Toaster } from '@blueprintjs/core'
 import Content from './components/content/Content'
+import NavbarHook from 'components/navbar/NavbarHook'
+import { BrowserRouter } from 'react-router-dom'
+import { createMuiTheme, CssBaseline, ThemeProvider } from '@material-ui/core'
+import ToasterAlert from './lib/material-ui/ToasterAlert'
+
+const theme = createMuiTheme({
+  typography: {
+    fontFamily: 'Poppins, Arial'
+  },
+  palette: {
+    primary: {
+      light: '#d2f7e5',
+      main: '#2A9D8F',
+      dark: '#083a4b'
+    },
+    secondary: {
+      light: '#d2f7e5',
+      main: '#2A9D8F',
+      dark: '#083a4b'
+    },
+    error: {
+      light: '#fcdbd5',
+      main: '#d13055',
+      dark:'#640941'
+    },
+    warning: {
+      light: '#fff7cc',
+      main: '#ffc300',
+      dark:'#7a5100'
+    },
+    info: {
+      light: '#caf4fc',
+      main: '#007dd1',
+      dark:'#002464'
+    },
+    success: {
+      light: '#cffad0',
+      main: '#18a352',
+      dark:'#044e40'
+    }
+  }
+})
+
 /**
  * App class
  */
@@ -20,8 +56,12 @@ class App extends React.Component {
   constructor (props) {
     super(props)
     debugLog('App::constructor')
-    this.toasterRef = React.createRef()
     const isConnected = localStorage.getItem('isConnected') !== null && localStorage.getItem('isConnected') !== 'false'
+    App.toaster = {
+      text: '',
+      time: 0,
+      state: ''
+    }
     this.state = {
       isConnected: isConnected
     }
@@ -32,7 +72,6 @@ class App extends React.Component {
    */
   componentDidMount () {
     debugLog('App::componentDidMount')
-    App.toaster = this.toasterRef.current
   }
   /**
    * Show toast
@@ -43,18 +82,11 @@ class App extends React.Component {
    */
   static showToast = (intent, message, timeout) => {
     debugLog('App::showToast')
-    if (App.toaster) {
-      App.toaster.show({ intent: intent, message: message, timeout: timeout ? timeout : 5000 })
+    App.toaster = {
+      state: intent,
+      text: message,
+      time: timeout ? timeout : 5000
     }
-  }
-
-  /**
-   * Clear toaster
-   */
-  static clearToaster = () => {
-    debugLog('App::clearToaster')
-    if (App.toaster)
-      App.toaster.clear()
   }
 
   /**
@@ -75,15 +107,24 @@ class App extends React.Component {
     debugLog('App::render')
 
     return (
-      <div className="App">
-        <Toaster className={'Toaster'} ref={this.toasterRef}>
-        </Toaster>
-        <Content isConnected={this.state.isConnected} changeIsConnected={this.changeIsConnected}/>
-      </div>
+      <ThemeProvider theme={theme}>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,700&display=swap" />
+        <CssBaseline />
+        <div className="App">
+          <BrowserRouter>
+            {this.state.isConnected && <NavbarHook isConnected={this.state.isConnected} changeIsConnected={this.changeIsConnected} />}
+            {/* <ToasterAlert time={App.toaster.time} text={App.toaster.text} state={App.toaster.state}/> */}
+
+            <div className="App-content">
+              <Content isConnected={this.state.isConnected} changeIsConnected={this.changeIsConnected}/>
+            </div>
+          </BrowserRouter>
+        </div>
+      </ThemeProvider>
     )
   }
 }
 
-App.toaster = undefined
+App.toaster = {}
 
 export default App

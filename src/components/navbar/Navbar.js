@@ -55,7 +55,8 @@ class Navbar extends React.Component {
             {
               this.props.isConnected
                 ? <Button className="bp3-button bp3-minimal bp3-icon-user" text={'Se Déconnecter'} onClick={this.disconnect}/>
-                : <Link to="/login" style={{ color: 'inherit', textDecoration: 'inherit' }}><Button className="bp3-button bp3-minimal bp3-icon-user" text={'Se connecter'}/></Link>}
+                : <Link to="/login" style={{ color: 'inherit', textDecoration: 'inherit' }}><Button className="bp3-button bp3-minimal bp3-icon-user" text={'Se connecter'}/></Link>
+            }
           </BluePrintNavbar.Group>
         </BluePrintNavbar>
       </div>

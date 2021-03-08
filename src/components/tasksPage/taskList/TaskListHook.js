@@ -37,7 +37,9 @@ function TaskListHook (props){
             <div className="TaskList-content">Status</div>
             <div className="TaskList-options">Options</div>
           </Card>}
-          {TaskListHook}
+          <div className="TaskList-content">
+            {TaskListHook}
+          </div>
         </div> :
         <p>Pas de tâches pour le moment !</p>}
     </div>

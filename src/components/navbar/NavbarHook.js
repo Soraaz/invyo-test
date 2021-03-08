@@ -4,49 +4,106 @@ import './Navbar.scss'
 import { debugLog } from '../../lib/logs'
 import PropTypes from 'prop-types'
 import AppBar from '@material-ui/core/AppBar'
-import IconButton from '@material-ui/core/IconButton'
-import { Button, makeStyles, Toolbar, Typography } from '@material-ui/core'
-import MenuIcon from '@material-ui/icons/Menu'
+import { Button, makeStyles, Toolbar, Typography, useMediaQuery, useTheme } from '@material-ui/core'
+import AccountCircle from '@material-ui/icons/AccountCircle'
+import ListIcon from '@material-ui/icons/List'
+import LanguageIcon from '@material-ui/icons/Language'
+import StorageIcon from '@material-ui/icons/Storage'
+
+import App from 'App'
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1
+    width: '100%',
+    top: 0,
+    left: 'auto',
+    right: 0,
+    position: 'fixed'
   },
   menuButton: {
     marginRight: theme.spacing(2)
   },
   title: {
     flexGrow: 1
+  },
+  centerIcon: {
+    margin: theme.spacing(0)
   }
 }))
 
 /**
    * NavbarHook class
    */
-function NavbarHook () {
+function NavbarHook (props) {
   debugLog('Navbar::constructor')
 
   const classes = useStyles()
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
   /**
    * Disconnect the user
    */
-  // function disconnect () {
-  //   App.showToast('success', 'Tu es bien déconnecté ! A bientôt !')
-  //   this.props.changeIsConnected(false)
-  // }
+  function disconnect () {
+    if (props.isConnected)
+    {
+      App.showToast('success', 'Tu es bien déconnecté ! A bientôt !')
+      props.changeIsConnected(false)
+    }
+  }
 
   return(
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" style={{ background: '#394b59' }}>
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            News
+
+          <Typography className={classes.title}>
+            Invyo test
           </Typography>
-          <Button color="inherit">Login</Button>
+
+          <Link to="/todo" style={{ color: 'inherit', textDecoration: 'inherit' }}>
+            <Button
+              classes={isMobile ? { startIcon: classes.centerIcon } : {}}
+              color="inherit"
+              startIcon={<ListIcon />}
+            >
+              {!isMobile && 'Todo list'}
+            </Button>
+          </Link>
+
+          <Link to="/data" style={{ color: 'inherit', textDecoration: 'inherit' }}>
+            <Button
+              classes={isMobile ? { startIcon: classes.centerIcon } : {}}
+              color="inherit"
+              startIcon={<StorageIcon />}
+            >
+              {!isMobile && 'Data view'}
+            </Button>
+          </Link>
+
+          <Link to="/network" style={{ color: 'inherit', textDecoration: 'inherit' }}>
+            <Button
+              classes={isMobile ? { startIcon: classes.centerIcon } : {}}
+              color="inherit"
+              startIcon={<LanguageIcon />}
+            >
+              {!isMobile && 'Network'}
+            </Button>
+          </Link>
+
+          <Link to="/login" style={{ color: 'inherit', textDecoration: 'inherit' }}>
+            <Button
+              classes={isMobile ? { endIcon: classes.centerIcon } : {}}
+              color="inherit"
+              startIcon={<AccountCircle />}
+              onClick={disconnect}>
+              { props.isConnected
+                ? !isMobile && 'Se Déconnecter'
+                : !isMobile && 'Se Connecter'
+              }
+            </Button>
+          </Link>
         </Toolbar>
       </AppBar>
     </div>
