@@ -14,34 +14,22 @@ const theme = createMuiTheme({
   },
   palette: {
     primary: {
-      light: '#d2f7e5',
-      main: '#2A9D8F',
-      dark: '#083a4b'
+      main: '#2A9D8F'
     },
     secondary: {
-      light: '#d2f7e5',
-      main: '#2A9D8F',
-      dark: '#083a4b'
+      main: '#2A9D8F'
     },
     error: {
-      light: '#fcdbd5',
-      main: '#d13055',
-      dark:'#640941'
+      main: '#d13055'
     },
     warning: {
-      light: '#fff7cc',
-      main: '#ffc300',
-      dark:'#7a5100'
+      main: '#ffc300'
     },
     info: {
-      light: '#caf4fc',
-      main: '#007dd1',
-      dark:'#002464'
+      main: '#007dd1'
     },
     success: {
-      light: '#cffad0',
-      main: '#18a352',
-      dark:'#044e40'
+      main: '#18a352'
     }
   }
 })
@@ -57,11 +45,6 @@ class App extends React.Component {
     super(props)
     debugLog('App::constructor')
     const isConnected = localStorage.getItem('isConnected') !== null && localStorage.getItem('isConnected') !== 'false'
-    App.toaster = {
-      text: '',
-      time: 0,
-      state: ''
-    }
     this.state = {
       isConnected: isConnected
     }
@@ -73,28 +56,15 @@ class App extends React.Component {
   componentDidMount () {
     debugLog('App::componentDidMount')
   }
-  /**
-   * Show toast
-   *
-   * @param intent Intent
-   * @param message Message
-   * @param timeout Timeout
-   */
-  static showToast = (intent, message, timeout) => {
-    debugLog('App::showToast')
-    App.toaster = {
-      state: intent,
-      text: message,
-      time: timeout ? timeout : 5000
-    }
-  }
 
   /**
    * Change the IsConnected state
-   * @param bool Boolean true of false for setting isConnected
+   * @param {Boolean} bool true of false for setting isConnected
+   * @param {Boolean} remember set localstore true or false
    */
-  changeIsConnected = (bool) => {
-    localStorage.setItem('isConnected', bool)
+  changeIsConnected = (bool, remember) => {
+    if (remember)
+      localStorage.setItem('isConnected', bool.toString())
     this.setState({
       isConnected: bool
     })
@@ -112,19 +82,17 @@ class App extends React.Component {
         <CssBaseline />
         <div className="App">
           <BrowserRouter>
-            {this.state.isConnected && <NavbarHook isConnected={this.state.isConnected} changeIsConnected={this.changeIsConnected} />}
-            {/* <ToasterAlert time={App.toaster.time} text={App.toaster.text} state={App.toaster.state}/> */}
-
-            <div className="App-content">
-              <Content isConnected={this.state.isConnected} changeIsConnected={this.changeIsConnected}/>
-            </div>
+            <ToasterAlert>
+              {this.state.isConnected && <NavbarHook isConnected={this.state.isConnected} changeIsConnected={this.changeIsConnected} />}
+              <div className="App-content">
+                <Content isConnected={this.state.isConnected} changeIsConnected={this.changeIsConnected}/>
+              </div>
+            </ToasterAlert>
           </BrowserRouter>
         </div>
       </ThemeProvider>
     )
   }
 }
-
-App.toaster = {}
 
 export default App

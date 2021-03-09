@@ -63,7 +63,7 @@ class TasksPage extends React.Component {
         tasks: [...state.tasks, task]
       }), () => {
         localStorage.setItem('dataList', JSON.stringify(this.state.tasks))
-        App.showToast(Intent.SUCCESS, 'Ta nouvelle tâche a bien été créer !')
+        // showToast(Intent.SUCCESS, 'Ta nouvelle tâche a bien été créer !')
       })
     }
   }
@@ -92,7 +92,7 @@ class TasksPage extends React.Component {
     }), () =>
     {
       localStorage.setItem('dataList', JSON.stringify(this.state.tasks))
-      App.showToast(Intent.SUCCESS, 'La tâche a bien été supprimée !')
+      // showToast(Intent.SUCCESS, 'La tâche a bien été supprimée !')
     })
   }
 
@@ -117,7 +117,7 @@ class TasksPage extends React.Component {
     }), () =>
     {
       localStorage.setItem('dataList', JSON.stringify(this.state.tasks))
-      App.showToast(Intent.SUCCESS, 'La tâche a bien été modifier !')
+      // showToast(Intent.SUCCESS, 'La tâche a bien été modifier !')
     })
   }
 

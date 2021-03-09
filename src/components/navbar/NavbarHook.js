@@ -10,8 +10,8 @@ import ListIcon from '@material-ui/icons/List'
 import LanguageIcon from '@material-ui/icons/Language'
 import StorageIcon from '@material-ui/icons/Storage'
 
-import App from 'App'
 import { Link } from 'react-router-dom'
+import useToast from '../../lib/material-ui/ToastClass'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,14 +42,16 @@ function NavbarHook (props) {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
+  const { addToast } = useToast()
+
   /**
    * Disconnect the user
    */
   function disconnect () {
     if (props.isConnected)
     {
-      App.showToast('success', 'Tu es bien déconnecté ! A bientôt !')
-      props.changeIsConnected(false)
+      addToast('success', 'Tu es bien déconnecté ! A bientôt !')
+      props.changeIsConnected(false, true)
     }
   }
 
@@ -58,7 +60,7 @@ function NavbarHook (props) {
       <AppBar position="static" style={{ background: '#394b59' }}>
         <Toolbar>
 
-          <Typography className={classes.title}>
+          <Typography variant="h6" className={classes.title}>
             Invyo test
           </Typography>
 

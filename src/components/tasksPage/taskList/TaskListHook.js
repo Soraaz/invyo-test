@@ -1,20 +1,64 @@
-import './TaskList.scss'
-
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { debugLog } from '../../../lib/logs'
 import TaskHook from './task/TaskHook'
-import { Card, useMediaQuery, useTheme } from '@material-ui/core'
+import { Card, IconButton, makeStyles, Typography } from '@material-ui/core'
+import AddCircleIcon from '@material-ui/icons/AddCircle'
+import VisibilityIcon from '@material-ui/icons/Visibility'
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff'
 import stringToDate from 'lib/tools/StringToDate'
+
+const useStyles = makeStyles((theme) => ({
+  flexBox: {
+    flexWrap: 'wrap',
+    flexDirection: 'column',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'row'
+    },
+    display: 'flex',
+    overflow: 'auto',
+    maxHeight: '80vh',
+    height: '80vh',
+    alignContent: 'baseline',
+    alignItems: 'center'
+  },
+  cardButtons: {
+    width: '300px',
+    background: 'rgba(255,255,255,0.1)',
+    padding: '1em',
+    backdropFilter: 'blur(10px)',
+    margin: 'auto',
+    marginTop: '1em',
+    marginBottom: '1em',
+    border: '1px solid rgba(255,255,255,0.3)',
+    borderRadius: '20px',
+    display: 'flex',
+    justifyContent: 'center'
+  }
+}))
 
 /**
 * TaskListHook class
 */
 function TaskListHook (props){
   debugLog('TaskList:render')
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+
+  const classes = useStyles()
+
+  const [taskFinishLength, setTaskFinishLength] = useState(() => {
+    return props.tasks.filter((task) => {
+      return (task.isEnd)
+    }).length
+  })
+
+  useEffect(() => {
+    setTaskFinishLength(() => {
+      return props.tasks.filter((task) => {
+        return (task.isEnd)
+      }).length
+    })
+  }, [props.tasks])
 
   let TaskListHook = props.tasks.filter((task) => {
     return (!task.isEnd || props.seeEndTask)
@@ -28,16 +72,26 @@ function TaskListHook (props){
 
   return (
     <div className="TaskList">
+
+      <Card className={classes.cardButtons}>
+
+        <Typography variant="subtitle1"><b>In progress </b>{props.tasks.length - taskFinishLength}
+          <IconButton onClick={props.toggleTaskCreate}>
+            <AddCircleIcon color="error"/>
+          </IconButton>
+        </Typography>
+
+        <Typography variant="subtitle1"><b>Done </b>{taskFinishLength}
+          <IconButton onClick={props.toggleSeeEndTask}>
+            {!props.seeEndTask ? <VisibilityOffIcon color="secondary" /> : <VisibilityIcon color="secondary" />}
+          </IconButton>
+        </Typography>
+
+      </Card>
+
       {TaskListHook.length ?
         <div className="TaskList-header">
-          {!isMobile && <Card className="TaskList-card">
-            <div className="TaskList-name">Titre</div>
-            <div className="TaskList-name">Description</div>
-            <div className="TaskList-name">Date de fin</div>
-            <div className="TaskList-content">Status</div>
-            <div className="TaskList-options">Options</div>
-          </Card>}
-          <div className="TaskList-content">
+          <div className={classes.flexBox}>
             {TaskListHook}
           </div>
         </div> :
@@ -50,7 +104,9 @@ TaskListHook.propTypes = {
   tasks: PropTypes.array.isRequired,
   deleteTask: PropTypes.func.isRequired,
   updateTask: PropTypes.func.isRequired,
-  seeEndTask: PropTypes.bool.isRequired
+  seeEndTask: PropTypes.bool.isRequired,
+  toggleTaskCreate: PropTypes.func.isRequired,
+  toggleSeeEndTask: PropTypes.func.isRequired
 }
 
 export default TaskListHook

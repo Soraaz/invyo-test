@@ -1,19 +1,14 @@
 import React, { useEffect, useState } from 'react'
 
-import './TasksPage.scss'
 import { debugLog } from '../../lib/logs'
 import TaskCreateHook from './taskCreate/TaskCreateHook'
 import TaskListHook from './taskList/TaskListHook'
-import App from '../../App'
 
-import { Button, Card, makeStyles, useMediaQuery, useTheme, withStyles } from '@material-ui/core'
+import { Card, makeStyles } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
-import AddIcon from '@material-ui/icons/Add'
-import VisibilityIcon from '@material-ui/icons/Visibility'
-import VisibilityOffIcon from '@material-ui/icons/VisibilityOff'
-import { green } from '@material-ui/core/colors'
 import stringToDate from 'lib/tools/StringToDate'
 import differenceInSeconds from 'date-fns/differenceInSeconds'
+import useToast from '../../lib/material-ui/ToastClass'
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -21,20 +16,13 @@ const useStyles = makeStyles((theme) => ({
   },
   centerIcon: {
     margin: theme.spacing(0)
+  },
+  card: {
+    padding: '15px',
+    background: 'content-box'
+    // backgroundColor: '#5c3a7d'
   }
 }))
-
-const ColorButton = withStyles(() => ({
-  endIcon: {
-    margin: 0
-  },
-  root: {
-	  backgroundColor: green[500],
-	  '&:hover': {
-      backgroundColor: green[700]
-	  }
-  }
-}))(Button)
 
 let tasksIndex = 0
 
@@ -43,8 +31,8 @@ let tasksIndex = 0
  */
 function TasksPageHook () {
   const classes = useStyles()
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+
+  const { addToast } = useToast()
 
   const [tasks, setTasks] = useState(() => {
     const tasks = localStorage.getItem('dataList') !== null ? JSON.parse(localStorage.getItem('dataList')) : []
@@ -88,7 +76,7 @@ function TasksPageHook () {
     if (task) {
       setTasks([...tasks, task])
       tasksIndex++
-      App.showToast('success', 'Ta nouvelle tâche a bien été créer !')
+      addToast('success', 'Ta nouvelle tâche a bien été créer !')
     }
   }
 
@@ -108,7 +96,7 @@ function TasksPageHook () {
   function deleteTask (index) {
     debugLog('TaskPage::deleteTask')
     setTasks([...tasks.slice(0, index), ...tasks.slice(index+1)])
-    App.showToast('success', 'La tâche a bien été supprimée !')
+    addToast('success', 'La tâche a bien été supprimée !')
   }
 
   /**
@@ -126,18 +114,11 @@ function TasksPageHook () {
       },
       ...tasks.slice(index+1)
     ])
-    App.showToast('success', 'La tâche a bien été modifier !')
-  }
-
-  /**
-   * Showing hidden tasks button
-   */
-  function textShowButton () {
-    return <span>{seeEndTask ? 'Cacher' : 'Voir'} les tâches finis</span>
+    addToast('success', 'La tâche a bien été modifier !')
   }
 
   return(
-    <div className="Tasks" >
+    <div className="Tasks">
       <div className="Tasks-center">
 
         <TaskCreateHook
@@ -147,32 +128,10 @@ function TasksPageHook () {
           add={handleTaskCreate}
         />
 
-        <Card className="Tasks-card">
+        <Card className={classes.card}>
           <Typography variant="h4">Mes tâches</Typography>
 
-          <ColorButton
-            className="Tasks-new-button"
-            variant="contained"
-            color="primary"
-            endIcon={<AddIcon/>}
-            classes={isMobile ? { endIcon: classes.centerIcon } : {}}
-            onClick={toggleTaskCreate}
-          >
-            {!isMobile ? 'Nouvelle tâche' : null}
-          </ColorButton>
-
-          <Button
-            className={'Tasks-view-finish ' + classes.button}
-            variant="contained"
-            color="primary"
-            classes={isMobile ? { endIcon: classes.centerIcon } : {}}
-            endIcon={seeEndTask ? <VisibilityOffIcon/> : <VisibilityIcon/>}
-            onClick={toggleSeeEndTask}
-          >
-            {!isMobile ? textShowButton() : null}
-          </Button>
-
-          <TaskListHook tasks={tasks} deleteTask={deleteTask} seeEndTask={seeEndTask} updateTask={updateTask}/>
+          <TaskListHook seeEndTask={seeEndTask} tasks={tasks} deleteTask={deleteTask} updateTask={updateTask} toggleTaskCreate={toggleTaskCreate} toggleSeeEndTask={toggleSeeEndTask} />
         </Card>
       </div>
     </div>

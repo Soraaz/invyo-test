@@ -1,21 +1,12 @@
 import React, { useState } from 'react'
 
-import Avatar from '@material-ui/core/Avatar'
-import Button from '@material-ui/core/Button'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import TextField from '@material-ui/core/TextField'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
-import Link from '@material-ui/core/Link'
-import Paper from '@material-ui/core/Paper'
-import Grid from '@material-ui/core/Grid'
+import { Typography, Avatar, Button, FormControl, makeStyles, Grid, Paper, Link, Checkbox, FormControlLabel, TextField, CssBaseline, InputAdornment, IconButton } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import Typography from '@material-ui/core/Typography'
-import { makeStyles } from '@material-ui/core/styles'
 import { debugLog } from 'lib/logs'
-import App from 'App'
+import useToast from '../../lib/material-ui/ToastClass'
 import PropTypes from 'prop-types'
-import { FormControl } from '@material-ui/core'
+import Visibility from '@material-ui/icons/Visibility'
+import VisibilityOff from '@material-ui/icons/VisibilityOff'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -63,6 +54,9 @@ function SignInHook (props) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+  const [rememberMe, setRememberMe] = useState(false)
+
+  const { addToast } = useToast()
 
   /**
    * Update email
@@ -97,30 +91,30 @@ function SignInHook (props) {
   }
 
   /**
+   * handle RemembeMe checkbox
+   * @param {Object} e Event
+   */
+  function handleRememberMe (e) {
+    debugLog('SignIn::handleRememberMe')
+    setRememberMe(e.target.value)
+  }
+
+  /**
    * Handle SignIn click
    */
   function handleSignIn () {
     debugLog('SignIn::handleSignIn')
 
     if (email === 'test@invyo.io' && password === 'test123@') {
-      App.showToast('success', 'Tu es connecté ! Passe une bonne journée !')
-      props.changeIsConnected(true)
+      addToast('success', 'Tu es connecté ! Passe une bonne journée !')
+      props.changeIsConnected(true, rememberMe)
     }
     else
     {
-      App.showToast('success', 'Erreur d\'authentification, Regarde si l\'email et le mot de passe sont correct')
+      addToast('error', 'Erreur d\'authentification, Regarde si l\'email et le mot de passe sont correct')
       setError(true)
     }
   }
-
-  // const lockButton =
-  //   <Tooltip content={`${this.state.showPassword ? 'Hide' : 'Show'} Password` }>
-  //     <Button
-  //       icon={this.state.showPassword ? IconNames.UNLOCK : IconNames.LOCK}
-  //       minimal={true}
-  //       onClick={this.handleShowPassword}
-  //     />
-  //   </Tooltip>
 
   return(
     <Grid container component="main" className={classes.root}>
@@ -156,13 +150,24 @@ function SignInHook (props) {
               error={error}
               name="password"
               label="Password"
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               id="password"
               autoComplete="current-password"
               onChange={updatePassword}
+              InputProps={{
+                endAdornment:
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleShowPassword}
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              }}
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={<Checkbox value="remember" color="primary" onChange={handleRememberMe} />}
               label="Remember me"
             />
             <Button
@@ -189,13 +194,6 @@ function SignInHook (props) {
           </FormControl>
         </div>
       </Grid>
-      <div className="drops">
-        <div className="drop drop-1"></div>
-        <div className="drop drop-2"></div>
-        <div className="drop drop-3"></div>
-        <div className="drop drop-4"></div>
-        <div className="drop drop-5"></div>
-      </div>
     </Grid>
   )
 }
