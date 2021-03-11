@@ -22,12 +22,14 @@ const useStyles = makeStyles(() => ({
   },
   descriptionText: {
     fontSize: 12,
-    color: 'black',
     fontWeight: 20
   }
 }))
 
 const GreenProgressBar = withStyles((theme) => ({
+  root: {
+    boxShadow: '-1px -4px 50px 3px ' + theme.palette.success.light
+  },
   colorPrimary: {
     backgroundColor: theme.palette.success.light // green[500]
   },
@@ -37,6 +39,9 @@ const GreenProgressBar = withStyles((theme) => ({
 }))(LinearProgress)
 
 const RedProgressBar = withStyles((theme) => ({
+  root: {
+    boxShadow: '-1px -4px 50px 3px ' + theme.palette.error.light
+  },
   colorPrimary: {
     backgroundColor: theme.palette.error.light // red[500]
   },
@@ -46,11 +51,20 @@ const RedProgressBar = withStyles((theme) => ({
 }))(LinearProgress)
 
 const GreyProgressBar = withStyles((theme) => ({
+  root: {
+    boxShadow: '-1px -4px 50px 3px ' + theme.palette.warning.light
+  },
   colorPrimary: {
     backgroundColor: theme.palette.warning.light // grey[500]
   },
   barColorPrimary: {
     backgroundColor: theme.palette.warning.dark // grey[900]
+  }
+}))(LinearProgress)
+
+const BlueProgressBar = withStyles((theme) => ({
+  root: {
+    boxShadow: '-1px -4px 50px 3px ' + theme.palette.primary.light
   }
 }))(LinearProgress)
 
@@ -72,7 +86,7 @@ function ProgressBarWithLabel(props) {
       <Box width="100%" mr={1}>
         {seconds <= 0 && <GreenProgressBar variant="determinate" {...props} value={0} color="primary" />}
         {seconds > 0 && days <= 0 && <RedProgressBar variant="determinate" {...props} value={(24 - hour) * 4} color="primary" />}
-        {days < 30 && days > 0 && <LinearProgress variant="determinate" {...props} value={(30 - days) * 3} color="primary" />}
+        {days < 30 && days > 0 && <BlueProgressBar variant="determinate" {...props} value={(30 - days) * 3} color="primary" />}
         {days >= 30 && <GreyProgressBar variant="determinate" {...props} value={(365 - days) / 4} color="primary" />}
       </Box>
       <Box minWidth={35} className={classes.description}>

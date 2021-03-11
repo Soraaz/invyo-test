@@ -9,15 +9,14 @@ import AddIcon from '@material-ui/icons/Add'
 
 import { format } from 'date-fns'
 
-import { green } from '@material-ui/core/colors'
 import { withStyles, useTheme } from '@material-ui/core/styles'
 import differenceInSeconds from 'date-fns/differenceInSeconds'
 
-const ColorButton = withStyles(() => ({
+const ColorButton = withStyles((theme) => ({
   root: {
-    backgroundColor: green[500],
+    backgroundColor: theme.palette.success.main,
     '&:hover': {
-      backgroundColor: green[700]
+      backgroundColor: theme.palette.success.dark
     }
   }
 }))(Button)
@@ -100,8 +99,7 @@ function TaskCreateHook (props) {
       title: name.data,
       description: description.data,
       date: format(date.data, 'dd/MM/yyyy'),
-      isEnd: differenceInSeconds(date.data, new Date()) <= 0,
-      id: props.index
+      isEnd: differenceInSeconds(date.data, new Date()) <= 0
     }
 
     props.add(task)

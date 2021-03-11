@@ -11,17 +11,6 @@ export const ToastContext = React.createContext({
   removeToast: () => {}
 })
 
-// position: fixed;
-// opacity: 1;
-// transition: opacity 2000ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-// width: 50vh;
-// z-index: 1;
-// margin-right: 50vh;
-// margin-left: 50vh;
-// /* margin-top: 50vh; */
-// margin-top: 2vh;
-// /* vertical-align: middle;
-
 const useStyles = makeStyles(() => ({
   alert: {
     position: 'fixed',
@@ -46,6 +35,8 @@ function ToasterAlert ({ children }) {
 
   const [open, setOpen] = useState(false)
   const [data, setData] = useState(null)
+
+  // { intent: 'error', message: 'un example de popup qui sort de l ecran avec un message long' }
 
   /**
   * Remove Toast

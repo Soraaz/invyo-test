@@ -4,8 +4,7 @@ import { debugLog } from '../../lib/logs'
 import TaskCreateHook from './taskCreate/TaskCreateHook'
 import TaskListHook from './taskList/TaskListHook'
 
-import { Card, makeStyles } from '@material-ui/core'
-import Typography from '@material-ui/core/Typography'
+import { makeStyles } from '@material-ui/core'
 import stringToDate from 'lib/tools/StringToDate'
 import differenceInSeconds from 'date-fns/differenceInSeconds'
 import useToast from '../../lib/material-ui/ToastClass'
@@ -74,8 +73,9 @@ function TasksPageHook () {
   function handleTaskCreate (task) {
     debugLog('TaskPage::handleTaskCreate')
     if (task) {
-      setTasks([...tasks, task])
       tasksIndex++
+      task.id = tasksIndex
+      setTasks([...tasks, task])
       addToast('success', 'Ta nouvelle tâche a bien été créer !')
     }
   }
@@ -106,12 +106,10 @@ function TasksPageHook () {
    */
   function updateTask (task, index) {
     debugLog('TaskPage::updateTask')
+
     setTasks([
-      ...tasks.splice(0, index),
-      {
-        ...tasks[index],
-        ...task
-      },
+      ...tasks.slice(0, index),
+      task,
       ...tasks.slice(index+1)
     ])
     addToast('success', 'La tâche a bien été modifier !')
@@ -128,11 +126,11 @@ function TasksPageHook () {
           add={handleTaskCreate}
         />
 
-        <Card className={classes.card}>
-          <Typography variant="h4">Mes tâches</Typography>
+        <div className={classes.card}>
+          {/* <Typography variant="h4">Mes tâches</Typography> */}
 
           <TaskListHook seeEndTask={seeEndTask} tasks={tasks} deleteTask={deleteTask} updateTask={updateTask} toggleTaskCreate={toggleTaskCreate} toggleSeeEndTask={toggleSeeEndTask} />
-        </Card>
+        </div>
       </div>
     </div>
   )

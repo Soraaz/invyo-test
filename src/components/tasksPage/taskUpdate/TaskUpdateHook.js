@@ -1,18 +1,42 @@
 import React, { useState } from 'react'
 
-import './TaskUpdate.scss'
-
 import PropTypes from 'prop-types'
 import { debugLog } from '../../../lib/logs'
-import { Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogTitle, FormGroup, TextField, useMediaQuery } from '@material-ui/core'
-import EditIcon from '@material-ui/icons/Edit'
-
 import { format } from 'date-fns'
+import DateFnsUtils from '@date-io/date-fns'
+import { Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogTitle, FormGroup, TextField, Fade } from '@material-ui/core'
+import EditIcon from '@material-ui/icons/Edit'
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 
 import { green } from '@material-ui/core/colors'
-import { withStyles, useTheme } from '@material-ui/core/styles'
+import { withStyles, makeStyles, ThemeProvider, createMuiTheme, useTheme } from '@material-ui/core/styles'
 import stringToDate from 'lib/tools/StringToDate'
 import differenceInSeconds from 'date-fns/differenceInSeconds'
+
+const useStyles = makeStyles(() => ({
+  blurEffect: {
+    background: 'rgba(255,255,255,0.1)',
+    backdropFilter: 'blur(10px)',
+    padding: '1em',
+    boxShadow: '20px 20px 40px -6px rgba(0,0,0,0.2)',
+    border: '1px solid rgba(255,255,255,0.2)',
+    borderRadius: '20px'
+  },
+  blurEffectKeyboard: {
+    '& .Muipaper-root': {
+      background: 'rgba(255,255,255,0.1)',
+      backdropFilter: 'blur(10px)',
+      padding: '1em',
+      boxShadow: '20px 20px 40px -6px rgba(0,0,0,0.2)',
+      border: '1px solid rgba(255,255,255,0.2)',
+      borderRadius: '20px'
+    }
+  },
+  blurEffectBack: {
+    background: 'rgba(255,255,255,0.1)',
+    backdropFilter: 'blur(10px)'
+  }
+}))
 
 const ColorButton = withStyles(() => ({
   root: {
@@ -27,8 +51,19 @@ const ColorButton = withStyles(() => ({
  * TaskUpdateHook class
  */
 function TaskUpdateHook (props) {
+  const classes = useStyles()
   const theme = useTheme()
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
+
+  const keyBoardTheme = createMuiTheme(theme, {
+    overrides: {
+      MuiPopover: {
+        paper: {
+          background: 'transparent',
+          borderRadius: '20px'
+        }
+      }
+    }
+  })
 
   const [name, setName] = useState({
     data: props.name,
@@ -82,10 +117,10 @@ function TaskUpdateHook (props) {
   function updateDate(e) {
     debugLog('TaskUpdate::updateDate')
     if (e) {
-      const date = e.target.value
-      const valid = /* date >= new Date() */ true
+      const date = e
+      const valid = true
       setDate({
-        data: new Date(date),
+        data: date,
         valid: valid
       })
     }
@@ -101,7 +136,7 @@ function TaskUpdateHook (props) {
       description: description.data,
       date: format(date.data, 'dd/MM/yyyy'),
       isEnd: differenceInSeconds(date.data, new Date()) <= 0,
-      id: props.index
+      id: props.id
     }
 
     props.update(task, props.index)
@@ -147,71 +182,75 @@ function TaskUpdateHook (props) {
       onClose={props.close}
       open={props.isOpen}
       aria-labelledby="form-dialog-title"
-      fullScreen={fullScreen}
+      classes={{ paper: classes.blurEffect, root:  classes.blurEffectBack }}
+      TransitionComponent={Fade}
+      transitionDuration={{ enter: 1000, exit: 1000 }}
     >
-      <DialogTitle id="form-dialog-title">Modifier une tâche</DialogTitle>
-      <DialogContent>
-        <FormGroup
-        >
-          <TextField
-            fullWidth
-            autoFocus
-            margin="dense"
-            error={!name.valid && true}
-            id="new-task-name"
-            label="Titre"
-            defaultValue={name.data}
-            onChange={(e) => updateString(e, 'name')}
-            onKeyPress={handleKeyPress}
-          />
-
-          <TextField
-            fullWidth
-            margin="dense"
-            error={!description.valid && true}
-            id="new-task-description"
-            label="Description"
-            defaultValue={description.data}
-            onChange={(e) => updateString(e, 'description')}
-            onKeyPress={handleKeyPress}
-          />
-
-          <TextField
-            fullWidth
-            id="date"
-            margin="dense"
-            label="Date de fin"
-            type="date"
-            defaultValue={format(date.data, 'yyyy-MM-dd')}
-            onChange={updateDate}
-            InputLabelProps={{
-              shrink: true
-            }}
-          />
-        </FormGroup>
-
-      </DialogContent>
-      <DialogActions>
-        <ButtonGroup className="align-right">
-
-          <Button
-            variant="contained"
-            color="default"
-            onClick={close} >
-                Annuler
-          </Button>
-
-          <ColorButton
-            variant="contained"
-            color="primary"
-            startIcon={<EditIcon/>}
-            disabled={!name.valid || !description.valid || !date.valid}
-            onClick={handleCreate}
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <DialogTitle id="form-dialog-title">Modifier une tâche</DialogTitle>
+        <DialogContent>
+          <FormGroup
           >
+            <TextField
+              fullWidth
+              autoFocus
+              margin="dense"
+              error={!name.valid && true}
+              id="new-task-name"
+              label="Titre"
+              defaultValue={name.data}
+              onChange={(e) => updateString(e, 'name')}
+              onKeyPress={handleKeyPress}
+            />
+
+            <TextField
+              fullWidth
+              margin="dense"
+              error={!description.valid && true}
+              id="new-task-description"
+              label="Description"
+              defaultValue={description.data}
+              onChange={(e) => updateString(e, 'description')}
+              onKeyPress={handleKeyPress}
+            />
+
+            <ThemeProvider theme={keyBoardTheme}>
+              <KeyboardDatePicker
+                autoOk
+                className={classes.blurEffectKeyboard}
+                disableToolbar
+                variant="inline"
+                format="dd/MM/yyyy"
+                margin="normal"
+                value={date.data}
+                onChange={updateDate}
+              />
+            </ThemeProvider>
+          </FormGroup>
+
+        </DialogContent>
+        <DialogActions>
+          <ButtonGroup className="align-right">
+
+            <Button
+              variant="contained"
+              color="default"
+              onClick={close} >
+                Annuler
+            </Button>
+
+            <ColorButton
+              variant="contained"
+              color="primary"
+              startIcon={<EditIcon/>}
+              disabled={!name.valid || !description.valid || !date.valid}
+              onClick={handleCreate}
+            >
             Modifier
-          </ColorButton>
-        </ButtonGroup>
-      </DialogActions>
+            </ColorButton>
+          </ButtonGroup>
+        </DialogActions>
+      </MuiPickersUtilsProvider>
     </Dialog>
   )
 }
@@ -223,7 +262,8 @@ TaskUpdateHook.propTypes = {
   name: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
-  index: PropTypes.number.isRequired
+  index: PropTypes.number.isRequired,
+  id: PropTypes.number.isRequired
 }
 
 export default TaskUpdateHook

@@ -6,7 +6,6 @@ import { Button, Card, Elevation, H1, Intent } from '@blueprintjs/core'
 import { IconNames } from '@blueprintjs/icons'
 import TaskCreate from './taskCreate/TaskCreate'
 import TaskListHook from './taskList/TaskListHook'
-import App from '../../App'
 import { isMobile } from 'react-device-detect'
 
 /**

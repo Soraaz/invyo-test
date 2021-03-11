@@ -3,11 +3,12 @@ import React, { useEffect, useState } from 'react'
 
 import { debugLog } from '../../../lib/logs'
 import TaskHook from './task/TaskHook'
-import { Card, IconButton, makeStyles, Typography } from '@material-ui/core'
+import { IconButton, makeStyles, Typography } from '@material-ui/core'
 import AddCircleIcon from '@material-ui/icons/AddCircle'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff'
 import stringToDate from 'lib/tools/StringToDate'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
 
 const useStyles = makeStyles((theme) => ({
   flexBox: {
@@ -24,17 +25,16 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center'
   },
   cardButtons: {
-    width: '300px',
-    background: 'rgba(255,255,255,0.1)',
+    width: '400px',
     padding: '1em',
     backdropFilter: 'blur(10px)',
     margin: 'auto',
     marginTop: '1em',
-    marginBottom: '1em',
-    border: '1px solid rgba(255,255,255,0.3)',
-    borderRadius: '20px',
     display: 'flex',
     justifyContent: 'center'
+  },
+  iconButton: {
+    padding: 0
   }
 }))
 
@@ -47,25 +47,27 @@ function TaskListHook (props){
   const classes = useStyles()
 
   const [taskFinishLength, setTaskFinishLength] = useState(() => {
-    return props.tasks.filter((task) => {
+    const tmpTask = props.tasks
+    return tmpTask.filter((task) => {
       return (task.isEnd)
     }).length
   })
 
   useEffect(() => {
     setTaskFinishLength(() => {
-      return props.tasks.filter((task) => {
+      const tmpTask = props.tasks
+      return tmpTask.filter((task) => {
         return (task.isEnd)
       }).length
     })
   }, [props.tasks])
 
-  let TaskListHook = props.tasks.filter((task) => {
-    return (!task.isEnd || props.seeEndTask)
+  let TaskListHook = props.tasks.map((task, index) => {
+    return (<TaskHook delete={props.deleteTask} key={task.id} id={task.id} index={index} title={task.title} description={task.description} date={task.date} isEnd={task.isEnd} update={props.updateTask}/>)
   })
 
-  TaskListHook = TaskListHook.map((task, index) => {
-    return (<TaskHook delete={props.deleteTask} key={task.id} index={index} title={task.title} description={task.description} date={task.date} isEnd={task.isEnd} update={props.updateTask}/>)
+  TaskListHook = TaskListHook.filter((task) => {
+    return (!task.props.isEnd || props.seeEndTask)
   })
 
   TaskListHook = TaskListHook.sort((dataA, dataB) => new Date(stringToDate(dataA.props.date)) > new Date(stringToDate(dataB.props.date)) ? 1 : -1)
@@ -73,21 +75,31 @@ function TaskListHook (props){
   return (
     <div className="TaskList">
 
-      <Card className={classes.cardButtons}>
+      <div className={classes.cardButtons}>
 
-        <Typography variant="subtitle1"><b>In progress </b>{props.tasks.length - taskFinishLength}
-          <IconButton onClick={props.toggleTaskCreate}>
-            <AddCircleIcon color="error"/>
-          </IconButton>
-        </Typography>
+        <div style={{ display: 'flex', alignItems: 'center', flex:'auto', marginLeft:'20px' }}>
+          <Typography variant="subtitle1"><b>In progress </b>{' ' + (props.tasks.length - taskFinishLength)}</Typography>
+          <li id="spacer" style={{ flexGrow: 1, visibility: 'hidden' }} />
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <MoreVertIcon />
+            <IconButton onClick={props.toggleTaskCreate} className={classes.iconButton}>
+              <AddCircleIcon color="error"/>
+            </IconButton>
+          </div>
+        </div>
 
-        <Typography variant="subtitle1"><b>Done </b>{taskFinishLength}
-          <IconButton onClick={props.toggleSeeEndTask}>
-            {!props.seeEndTask ? <VisibilityOffIcon color="secondary" /> : <VisibilityIcon color="secondary" />}
-          </IconButton>
-        </Typography>
+        <div style={{ display: 'flex', alignItems: 'center', flex:'auto', marginLeft:'20px' }}>
+          <Typography variant="subtitle1"><b>Done </b>{taskFinishLength}</Typography>
+          <li id="spacer" style={{ flexGrow: 1, visibility: 'hidden' }} />
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <MoreVertIcon />
+            <IconButton onClick={props.toggleSeeEndTask} className={classes.iconButton}>
+              {!props.seeEndTask ? <VisibilityOffIcon color="secondary" /> : <VisibilityIcon color="secondary" />}
+            </IconButton>
+          </div>
+        </div>
 
-      </Card>
+      </div>
 
       {TaskListHook.length ?
         <div className="TaskList-header">

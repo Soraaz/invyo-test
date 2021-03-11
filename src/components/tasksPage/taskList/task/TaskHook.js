@@ -1,6 +1,4 @@
 import Card from '@material-ui/core/Card'
-import Button from '@material-ui/core/Button'
-import ButtonGroup from '@material-ui/core/ButtonGroup'
 import { makeStyles } from '@material-ui/core/styles'
 
 import DeleteIcon from '@material-ui/icons/Delete'
@@ -12,7 +10,7 @@ import { debugLog } from '../../../../lib/logs'
 import TaskDeleteHook from '../../taskDelete/TaskDeleteHook'
 import TaskUpdateHook from '../../taskUpdate/TaskUpdateHook'
 import ProgressBarWithLabel from '../../../../lib/material-ui/ProgressBarWithLabel'
-import { CardActions, IconButton, MenuItem, Typography, Menu } from '@material-ui/core'
+import { CardActions, IconButton, MenuItem, Typography, Menu, ListItemIcon, ListItemText } from '@material-ui/core'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 
 const useStyles = makeStyles((theme) => ({
@@ -28,18 +26,23 @@ const useStyles = makeStyles((theme) => ({
     padding: '1em',
     backdropFilter: 'blur(10px)',
     boxShadow: '20px 20px 40px -6px rgba(0,0,0,0.2)',
+    border: '1px solid rgba(255,255,255,0.2)',
+    borderRadius: '20px'
+  },
+  blurEffectBack: {
+    width: '190px',
+    background: 'rgba(255,255,255,0.1)',
     margin: '1em',
+    backdropFilter: 'blur(10px)',
     border: '1px solid rgba(255,255,255,0.2)',
     borderRadius: '20px'
   },
   cardTitle: {
     fontSize: 15,
-    color: 'black',
     fontWeight: 500
   },
   cardDescription: {
     fontSize: 12,
-    color: 'black',
     fontWeight: 20,
     marginTop: '8px'
   },
@@ -49,6 +52,18 @@ const useStyles = makeStyles((theme) => ({
   settings: {
     marginLeft: 'auto',
     padding: '0px'
+  },
+  menu: {
+    background: 'rgba(255,255,255,0.1)',
+    backdropFilter: 'blur(10px)',
+    boxShadow: '20px 20px 40px -6px rgba(0,0,0,0.2)',
+    margin: '1em',
+    border: '1px solid rgba(255,255,255,0.2)',
+    borderRadius: '20px'
+  },
+  listIcon: {
+    marginRight: '1vw',
+    minWidth: 0
   }
 }))
 
@@ -75,6 +90,7 @@ function TaskHook(props) {
 	*/
   function toggleUpdate () {
     debugLog('TaskHook::toggleUpdate')
+    handleMenuClose()
     setTaskUpdate({
       isOpen: !taskUpdate.isOpen
     })
@@ -85,6 +101,7 @@ function TaskHook(props) {
 	*/
   function toggleDelete () {
     debugLog('TaskHook::toggleDelete')
+    handleMenuClose()
     setTaskDelete({
       isOpen: !taskDelete.isOpen
     })
@@ -124,50 +141,17 @@ function TaskHook(props) {
   }
 
   /**
-	* Task for browser
+	* Task Card
 	*/
-  function desktopCard() {
-	  return (
-      <Card className={classes.blurEffect}>
-        <div className="TaskItem-name">{props.title}</div>
-        <div className="TaskItem-name">{props.description}</div>
-        <div className="TaskItem-name">{props.date}</div>
-        <div className="TaskItem-name">{showIsEnd()}</div>
-
-        <ButtonGroup className="TaskItem-options">
-		  <Button
-            variant="contained"
-            color="default"
-            classes={{ startIcon: classes.startIcon }}
-            className={classes.button}
-            startIcon={<SettingsIcon/>}
-            onClick={toggleUpdate}
-		  />
-		  {updateTask}
-		  <Button
-            variant="contained"
-            color="secondary"
-            classes={{ startIcon: classes.startIcon }}
-            className={classes.button}
-            startIcon={<DeleteIcon/>}
-            onClick={toggleDelete}
-		  />
-		  {deleteTask}
-        </ButtonGroup>
-	  </Card>
-	  )
-  }
-
-  /**
-	* Task for mobile phone
-	*/
-  function mobileCard() {
+  function taskCard() {
     return(
-      <Card className={classes.blurEffect}>
-        <Typography variant="h5" className={classes.cardTitle}>{props.title}</Typography>
-        <Typography variant="body1" className={classes.cardDescription}>{props.description}</Typography>
-        <div className={classes.dateBar}>{showIsEnd()}</div>
-        {settingsButtons}
+      <Card className={classes.blurEffectBack}>
+        <Card className={classes.blurEffect}>
+          <Typography variant="h5" className={classes.cardTitle}>{props.title}</Typography>
+          <Typography variant="body1" className={classes.cardDescription}>{props.description}</Typography>
+          <div className={classes.dateBar}>{showIsEnd()}</div>
+          {settingsButtons}
+        </Card>
       </Card>)
   }
 
@@ -179,6 +163,7 @@ function TaskHook(props) {
     date={props.date}
     close={toggleUpdate}
     update={props.update}
+    id={props.id}
   />
 
   const deleteTask = <TaskDeleteHook
@@ -194,40 +179,27 @@ function TaskHook(props) {
       <MoreVertIcon />
     </IconButton>
 
-    <Menu onClose={handleMenuClose} open={Boolean(taskMenu.anchor)} anchorEl={taskMenu.anchor}>
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+    <Menu classes={{ paper: classes.menu }} onClose={handleMenuClose} open={Boolean(taskMenu.anchor)} anchorEl={taskMenu.anchor}>
+      <MenuItem onClick={toggleUpdate}>
+        <ListItemIcon className={classes.listIcon}>
+          <SettingsIcon fontSize="small" />
+        </ListItemIcon>
+        <ListItemText primary="Edit" />
+      </MenuItem>
+      <MenuItem onClick={toggleDelete}>
+        <ListItemIcon className={classes.listIcon}>
+          <DeleteIcon fontSize="small" />
+        </ListItemIcon>
+        <ListItemText primary="Delete" />
+      </MenuItem>
     </Menu>
-
   </CardActions>
-
-  // const settingsButtons = <ButtonGroup>
-  //   <Button
-  //     variant="contained"
-  //     color="default"
-  //     classes={{ startIcon: classes.startIcon }}
-  //     className={classes.button}
-  //     startIcon={<SettingsIcon/>}
-  //     onClick={toggleUpdate}
-  //   />
-  //   {updateTask}
-  //   <Button
-  //     variant="contained"
-  //     color="secondary"
-  //     classes={{ startIcon: classes.startIcon }}
-  //     className={classes.button}
-  //     startIcon={<DeleteIcon/>}
-  //     onClick={toggleDelete}
-  //   />
-  //   {deleteTask}
-  // </ButtonGroup>
 
   return(
     <div>
-      {/* {!isMobile && desktopCard()}
-      {isMobile && mobileCard()} */}
-      {mobileCard()}
+      {taskCard()}
+      {updateTask}
+      {deleteTask}
     </div>
   )
 }
@@ -239,7 +211,8 @@ TaskHook.propTypes = {
   isEnd: PropTypes.bool.isRequired,
   delete: PropTypes.func.isRequired,
   update: PropTypes.func.isRequired,
-  index: PropTypes.number.isRequired
+  index: PropTypes.number.isRequired,
+  id: PropTypes.number.isRequired
 }
 
 export default TaskHook

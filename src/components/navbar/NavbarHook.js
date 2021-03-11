@@ -4,11 +4,13 @@ import './Navbar.scss'
 import { debugLog } from '../../lib/logs'
 import PropTypes from 'prop-types'
 import AppBar from '@material-ui/core/AppBar'
-import { Button, makeStyles, Toolbar, Typography, useMediaQuery, useTheme } from '@material-ui/core'
+import { Button, IconButton, makeStyles, Toolbar, Typography, useMediaQuery, useTheme } from '@material-ui/core'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import ListIcon from '@material-ui/icons/List'
 import LanguageIcon from '@material-ui/icons/Language'
 import StorageIcon from '@material-ui/icons/Storage'
+import WbSunnyIcon from '@material-ui/icons/WbSunny'
+import Brightness2Icon from '@material-ui/icons/Brightness2'
 
 import { Link } from 'react-router-dom'
 import useToast from '../../lib/material-ui/ToastClass'
@@ -25,10 +27,21 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2)
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
+    color: theme.palette.text.primary
   },
   centerIcon: {
     margin: theme.spacing(0)
+  },
+  button: {
+    textDecoration: 'inherit',
+    color: theme.palette.text.primary
+  },
+  darkModeButtonOn: {
+    color: theme.palette.warning.main
+  },
+  darkModeButtonOff: {
+    color: theme.palette.info.main
   }
 }))
 
@@ -57,14 +70,14 @@ function NavbarHook (props) {
 
   return(
     <div className={classes.root}>
-      <AppBar position="static" style={{ background: '#394b59' }}>
+      <AppBar position="static">
         <Toolbar>
 
           <Typography variant="h6" className={classes.title}>
             Invyo test
           </Typography>
 
-          <Link to="/todo" style={{ color: 'inherit', textDecoration: 'inherit' }}>
+          <Link to="/todo" className={classes.button}>
             <Button
               classes={isMobile ? { startIcon: classes.centerIcon } : {}}
               color="inherit"
@@ -74,7 +87,7 @@ function NavbarHook (props) {
             </Button>
           </Link>
 
-          <Link to="/data" style={{ color: 'inherit', textDecoration: 'inherit' }}>
+          <Link to="/data" className={classes.button}>
             <Button
               classes={isMobile ? { startIcon: classes.centerIcon } : {}}
               color="inherit"
@@ -84,7 +97,7 @@ function NavbarHook (props) {
             </Button>
           </Link>
 
-          <Link to="/network" style={{ color: 'inherit', textDecoration: 'inherit' }}>
+          <Link to="/network" className={classes.button}>
             <Button
               classes={isMobile ? { startIcon: classes.centerIcon } : {}}
               color="inherit"
@@ -94,7 +107,17 @@ function NavbarHook (props) {
             </Button>
           </Link>
 
-          <Link to="/login" style={{ color: 'inherit', textDecoration: 'inherit' }}>
+          { theme.palette.type === 'light' ?
+            <IconButton onClick={props.switchMode} className={classes.darkModeButtonOff}>
+              <Brightness2Icon />
+            </IconButton>
+            :
+            <IconButton onClick={props.switchMode} className={classes.darkModeButtonOn}>
+              <WbSunnyIcon />
+            </IconButton>
+          }
+
+          <Link to="/login" className={classes.button}>
             <Button
               classes={isMobile ? { endIcon: classes.centerIcon } : {}}
               color="inherit"
@@ -114,7 +137,8 @@ function NavbarHook (props) {
 
 NavbarHook.propTypes = {
   isConnected: PropTypes.bool.isRequired,
-  changeIsConnected: PropTypes.func.isRequired
+  changeIsConnected: PropTypes.func.isRequired,
+  switchMode: PropTypes.func.isRequired
 }
 
 export default NavbarHook
