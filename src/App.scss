@@ -1,23 +1,44 @@
-html, body , #root{
-  margin: 0;
-  height: 100%;
-  width: 100%;
+// html, body , #root{
+//   margin: 0;
+//   height: 100%;
+//   width: 100%;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
 
-  background-image: url(./assets/dashboard_background.jpg);
-  background-size: cover;
+//   background-image: url(./assets/dashboard_background.jpg);
+//   background-size: cover;
+// }
+
+// .App {
+//   height: 100%;
+//   display: flex;
+//   flex-direction: column;
+//   flex: 1 1 auto;
+// }
+
+// .App-content {
+//   height: 100%;
+// }
+
+::-webkit-scrollbar-track
+{
+	border-radius: 10px;
+  background: rgba(255,255,255,0);
+  box-shadow: inset 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
 }
 
-.App {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
+::-webkit-scrollbar
+{
+	width: 12px;
+  background: rgba(255,255,255,0);
 }
 
-.App-content {
-  height: 100%;
+::-webkit-scrollbar-thumb
+{
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
 }

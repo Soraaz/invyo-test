@@ -30,10 +30,9 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '20px'
   },
   blurEffectBack: {
-    width: '190px',
     background: 'rgba(255,255,255,0.1)',
+    width: '190px',
     margin: '1em',
-    backdropFilter: 'blur(10px)',
     border: '1px solid rgba(255,255,255,0.2)',
     borderRadius: '20px'
   },
@@ -179,7 +178,7 @@ function TaskHook(props) {
       <MoreVertIcon />
     </IconButton>
 
-    <Menu classes={{ paper: classes.menu }} onClose={handleMenuClose} open={Boolean(taskMenu.anchor)} anchorEl={taskMenu.anchor}>
+    <Menu classes={{ paper: classes.menu }} onClose={handleMenuClose} open={Boolean(taskMenu.anchor)} anchorEl={taskMenu.anchor} disableAutoFocusItem={true}>
       <MenuItem onClick={toggleUpdate}>
         <ListItemIcon className={classes.listIcon}>
           <SettingsIcon fontSize="small" />

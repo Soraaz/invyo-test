@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from 'react'
 
+import 'App.scss'
+
 import Content from './components/content/Content'
 import NavbarHook from 'components/navbar/NavbarHook'
 import { BrowserRouter } from 'react-router-dom'
@@ -22,6 +24,19 @@ const themeRoot = {
           backgroundImage: 'url('+ BackGroundHeader +')',
           backgroundSize: 'cover',
           backgroundColor: 'transparent'
+        },
+        '*::-webkit-scrollbar-track': {
+          borderRadius: '10px',
+          background: 'rgba(255,255,255,0)'
+        },
+        '*::-webkit-scrollbar':{
+          width: '12px',
+          backgroundColor: '#F5F5F5'
+        },
+        '*::-webkit-scrollbar-thumb':{
+          borderRadius: '10px',
+          background: 'rgba(255,255,255,0.1)',
+          boxShadow: 'inset 0 0 6px rgba(0,0,0,.3)'
         }
       }
     },
@@ -37,8 +52,7 @@ const themeRoot = {
         border: '1px solid rgba(255,255,255,0.2)',
         borderRadius: '20px'
       }
-    }
-    ,
+    },
     MuiBackdrop: {
       root: {
         backgroundColor: 'rgba(255,255,255,0)'

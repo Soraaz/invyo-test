@@ -7,25 +7,24 @@ import DateFnsUtils from '@date-io/date-fns'
 import { Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogTitle, FormGroup, TextField, Fade } from '@material-ui/core'
 import EditIcon from '@material-ui/icons/Edit'
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
-
-import { green } from '@material-ui/core/colors'
 import { withStyles, makeStyles, ThemeProvider, createMuiTheme, useTheme } from '@material-ui/core/styles'
 import stringToDate from 'lib/tools/StringToDate'
 import differenceInSeconds from 'date-fns/differenceInSeconds'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   blurEffect: {
     background: 'rgba(255,255,255,0.1)',
-    backdropFilter: 'blur(10px)',
     padding: '1em',
     boxShadow: '20px 20px 40px -6px rgba(0,0,0,0.2)',
     border: '1px solid rgba(255,255,255,0.2)',
-    borderRadius: '20px'
+    borderRadius: '20px',
+    height: '80vh',
+    width: '80vw',
+    maxWidth: '80vw'
   },
   blurEffectKeyboard: {
     '& .Muipaper-root': {
       background: 'rgba(255,255,255,0.1)',
-      backdropFilter: 'blur(10px)',
       padding: '1em',
       boxShadow: '20px 20px 40px -6px rgba(0,0,0,0.2)',
       border: '1px solid rgba(255,255,255,0.2)',
@@ -35,14 +34,23 @@ const useStyles = makeStyles(() => ({
   blurEffectBack: {
     background: 'rgba(255,255,255,0.1)',
     backdropFilter: 'blur(10px)'
+  },
+  cancelButton: {
+    color: 'white',
+    boxShadow: '-1px -4px 50px 3px ' + theme.palette.error.main,
+    backgroundColor: theme.palette.error.main,
+    '&:hover': {
+      backgroundColor: theme.palette.error.dark
+    }
   }
 }))
 
-const ColorButton = withStyles(() => ({
+const ColorButton = withStyles((theme) => ({
   root: {
-    backgroundColor: green[500],
+    boxShadow: '-1px -4px 50px 3px ' + theme.palette.primary.main,
+    backgroundColor: theme.palette.primary.main,
     '&:hover': {
-      backgroundColor: green[700]
+      backgroundColor: theme.palette.primary.dark
     }
   }
 }))(Button)
@@ -209,9 +217,11 @@ function TaskUpdateHook (props) {
               error={!description.valid && true}
               id="new-task-description"
               label="Description"
+              multiline
+              rows={4}
               defaultValue={description.data}
               onChange={(e) => updateString(e, 'description')}
-              onKeyPress={handleKeyPress}
+              // onKeyPress={handleKeyPress}
             />
 
             <ThemeProvider theme={keyBoardTheme}>
@@ -224,6 +234,7 @@ function TaskUpdateHook (props) {
                 margin="normal"
                 value={date.data}
                 onChange={updateDate}
+                PopoverProps={{ transitionDuration: 5 }}
               />
             </ThemeProvider>
           </FormGroup>
@@ -235,6 +246,7 @@ function TaskUpdateHook (props) {
             <Button
               variant="contained"
               color="default"
+              className={classes.cancelButton}
               onClick={close} >
                 Annuler
             </Button>
