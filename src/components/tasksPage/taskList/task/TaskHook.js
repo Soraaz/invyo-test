@@ -38,12 +38,14 @@ const useStyles = makeStyles((theme) => ({
   },
   cardTitle: {
     fontSize: 15,
-    fontWeight: 500
+    fontWeight: 500,
+    wordBreak: 'break-all'
   },
   cardDescription: {
     fontSize: 12,
     fontWeight: 20,
-    marginTop: '8px'
+    marginTop: '8px',
+    wordBreak: 'break-all'
   },
   dateBar: {
     textAlign: 'center'
@@ -163,6 +165,7 @@ function TaskHook(props) {
     close={toggleUpdate}
     update={props.update}
     id={props.id}
+    create={false}
   />
 
   const deleteTask = <TaskDeleteHook

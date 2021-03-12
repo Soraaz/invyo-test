@@ -9,10 +9,18 @@ import { makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHe
 
 const useStyles = makeStyles({
   root: {
-    width: '100%'
+    width: '100%',
+    backdropFilter: 'blur(10px)',
+    boxShadow: '20px 20px 40px -6px rgba(0,0,0,0.2)',
+    border: '1px solid rgba(255,255,255,0.2)',
+    borderRadius: '20px'
   },
   container: {
     maxHeight: '60vh'
+  },
+  border: {
+    border: '1px solid rgba(255,255,255,0.2)',
+    borderRadius: '20px'
   }
 })
 
@@ -112,12 +120,12 @@ function DataListHook (props) {
     <div className="DataList">
       <div className="DataList-block">
         {dataList.length ?
-          <Paper className={classes.root}>
+          <div className={classes.root}>
             <TableContainer className={classes.container}>
               <Table stickyHeader >
-                <TableHead>
-                  <TableRow>
-                    <TableCell className="DataList-name" align="left" style={{ minWidth: 170 }}>Titre</TableCell>
+                <TableHead >
+                  <TableRow >
+                    <TableCell className="DataList-name" align="left" style={{ minWidth: 170, border: '1px solid rgba(255,255,255,0.1)', borderTopLeftRadius: '20px' }}>Titre</TableCell>
                     <TableCell className="DataList-name" align="left" style={{ minWidth: 170 }}>Contenu</TableCell>
                     <TableCell className="DataList-name" align="center" style={{ minWidth: 170 }}>Langue</TableCell>
                     <TableCell className="DataList-name" align="center" style={{ minWidth: 170 }}>Tags</TableCell>
@@ -141,7 +149,7 @@ function DataListHook (props) {
               rowsPerPage={rowsPerPage}
               onChangeRowsPerPage={handleChangeRowsPerPage}
             />
-          </Paper>
+          </div>
           :
           <Paper className={classes.root}>
             <Typography variant="h6">Pas de datas trouvées avec ces options !</Typography>

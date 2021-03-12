@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 
 import { debugLog } from '../../lib/logs'
-import TaskCreateHook from './taskCreate/TaskCreateHook'
 import TaskListHook from './taskList/TaskListHook'
 
 import { makeStyles } from '@material-ui/core'
 import stringToDate from 'lib/tools/StringToDate'
 import differenceInSeconds from 'date-fns/differenceInSeconds'
 import useToast from '../../lib/material-ui/ToastClass'
+import TaskUpdateHook from './taskUpdate/TaskUpdateHook'
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -119,11 +119,12 @@ function TasksPageHook () {
     <div className="Tasks">
       <div className="Tasks-center">
 
-        <TaskCreateHook
+        <TaskUpdateHook
           index={tasksIndex + 1}
           isOpen={taskCreate.isOpen}
           close={toggleTaskCreate}
-          add={handleTaskCreate}
+          update={handleTaskCreate}
+          create={true}
         />
 
         <div className={classes.card}>

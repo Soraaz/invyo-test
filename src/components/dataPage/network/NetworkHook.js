@@ -48,7 +48,7 @@ function NetworkHook () {
   }
 
   return(
-    <Paper className="Network">
+    <div className="Network">
       <Typography variant="h4">Network</Typography>
       <Graph
         graph={graph}
@@ -56,7 +56,7 @@ function NetworkHook () {
         events={events}
         getNetwork={() => {}}
       />
-    </Paper>
+    </div>
   )
 }
 

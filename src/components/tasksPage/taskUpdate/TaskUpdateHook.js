@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import PropTypes from 'prop-types'
 import { debugLog } from '../../../lib/logs'
 import { format } from 'date-fns'
 import DateFnsUtils from '@date-io/date-fns'
-import { Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogTitle, FormGroup, TextField, Fade } from '@material-ui/core'
+import { Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogTitle, FormGroup, TextField, Zoom } from '@material-ui/core'
 import EditIcon from '@material-ui/icons/Edit'
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 import { withStyles, makeStyles, ThemeProvider, createMuiTheme, useTheme } from '@material-ui/core/styles'
@@ -18,8 +18,8 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: '20px 20px 40px -6px rgba(0,0,0,0.2)',
     border: '1px solid rgba(255,255,255,0.2)',
     borderRadius: '20px',
-    height: '80vh',
-    width: '80vw',
+    // height: '55vh',
+    // width: '80vw',
     maxWidth: '80vw'
   },
   blurEffectKeyboard: {
@@ -73,20 +73,26 @@ function TaskUpdateHook (props) {
     }
   })
 
+  const [error, setError] = useState(!props.create)
+
   const [name, setName] = useState({
-    data: props.name,
+    data: props.name ? props.name : '',
     valid: true
   })
 
   const [description, setDescription] = useState({
-    data: props.description,
+    data: props.description ? props.description : '',
     valid: true
   })
 
   const [date, setDate] = useState({
-    data: stringToDate(props.date),
+    data: props.date ? stringToDate(props.date) : new Date(),
     valid: true
   })
+
+  useEffect(() => {
+    setError (name.valid && description.valid && name.data !== '' && description.data !== '')
+  }, [name, description])
 
   /**
    * Update String
@@ -148,7 +154,11 @@ function TaskUpdateHook (props) {
     }
 
     props.update(task, props.index)
-    props.close()
+
+    if (props.create)
+      close()
+    else
+      props.close()
   }
 
   /**
@@ -157,15 +167,15 @@ function TaskUpdateHook (props) {
   function close () {
     debugLog('TaskUpdate::close')
     setName({
-      data: props.name,
+      data: props.name ? props.name : '',
       valid: true
     })
     setDescription({
-      data: props.description,
+      data: props.description ? props.description : '',
       valid: true
     })
     setDate({
-      data: stringToDate(props.date),
+      data: props.date ? stringToDate(props.date) : new Date(),
       valid: true
     })
     props.close()
@@ -191,11 +201,11 @@ function TaskUpdateHook (props) {
       open={props.isOpen}
       aria-labelledby="form-dialog-title"
       classes={{ paper: classes.blurEffect, root:  classes.blurEffectBack }}
-      TransitionComponent={Fade}
-      transitionDuration={{ enter: 1000, exit: 1000 }}
+      TransitionComponent={Zoom}
+      transitionDuration={{ enter: 500, exit: 500 }}
     >
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <DialogTitle id="form-dialog-title">Modifier une tâche</DialogTitle>
+        <DialogTitle id="form-dialog-title">{props.create ? 'Créer' : 'Modifier'} une tâche</DialogTitle>
         <DialogContent>
           <FormGroup
           >
@@ -221,7 +231,6 @@ function TaskUpdateHook (props) {
               rows={4}
               defaultValue={description.data}
               onChange={(e) => updateString(e, 'description')}
-              // onKeyPress={handleKeyPress}
             />
 
             <ThemeProvider theme={keyBoardTheme}>
@@ -255,10 +264,10 @@ function TaskUpdateHook (props) {
               variant="contained"
               color="primary"
               startIcon={<EditIcon/>}
-              disabled={!name.valid || !description.valid || !date.valid}
+              disabled={!error}
               onClick={handleCreate}
             >
-            Modifier
+              {props.create ? 'Créer' : 'Modifier'}
             </ColorButton>
           </ButtonGroup>
         </DialogActions>
@@ -271,11 +280,12 @@ TaskUpdateHook.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
   update: PropTypes.func.isRequired,
-  name: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  date: PropTypes.string.isRequired,
+  name: PropTypes.string,
+  description: PropTypes.string,
+  date: PropTypes.string,
   index: PropTypes.number.isRequired,
-  id: PropTypes.number.isRequired
+  id: PropTypes.number,
+  create: PropTypes.bool.isRequired
 }
 
 export default TaskUpdateHook

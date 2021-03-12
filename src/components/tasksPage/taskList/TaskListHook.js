@@ -15,7 +15,8 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'wrap',
     flexDirection: 'column',
     [theme.breakpoints.down('sm')]: {
-      flexDirection: 'row'
+      flexDirection: 'row',
+      justifyContent: 'center'
     },
     display: 'flex',
     overflow: 'auto',
@@ -35,6 +36,20 @@ const useStyles = makeStyles((theme) => ({
   },
   iconButton: {
     padding: 0
+  },
+  buttonsFlex: {
+    display: 'flex',
+    alignItems: 'center',
+    flex:'auto',
+    marginLeft:'20px'
+  },
+  spaceFlex: {
+    flexGrow: 1,
+    visibility: 'hidden'
+  },
+  groupButtons: {
+    display: 'flex',
+    alignItems: 'center'
   }
 }))
 
@@ -77,10 +92,10 @@ function TaskListHook (props){
 
       <div className={classes.cardButtons}>
 
-        <div style={{ display: 'flex', alignItems: 'center', flex:'auto', marginLeft:'20px' }}>
+        <div className={classes.buttonsFlex}>
           <Typography variant="subtitle1"><b>In progress </b>{' ' + (props.tasks.length - taskFinishLength)}</Typography>
-          <li id="spacer" style={{ flexGrow: 1, visibility: 'hidden' }} />
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <li id="spacer" className={classes.spaceFlex} />
+          <div className={classes.groupButtons}>
             <MoreVertIcon />
             <IconButton onClick={props.toggleTaskCreate} className={classes.iconButton}>
               <AddCircleIcon color="error"/>
@@ -88,10 +103,10 @@ function TaskListHook (props){
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', flex:'auto', marginLeft:'20px' }}>
+        <div className={classes.buttonsFlex}>
           <Typography variant="subtitle1"><b>Done </b>{taskFinishLength}</Typography>
-          <li id="spacer" style={{ flexGrow: 1, visibility: 'hidden' }} />
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <li id="spacer" className={classes.spaceFlex} />
+          <div className={classes.groupButtons}>
             <MoreVertIcon />
             <IconButton onClick={props.toggleSeeEndTask} className={classes.iconButton}>
               {!props.seeEndTask ? <VisibilityOffIcon color="secondary" /> : <VisibilityIcon color="secondary" />}

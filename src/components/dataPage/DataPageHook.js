@@ -135,7 +135,7 @@ function DataPageHook () {
     <div className="Datas" >
       <div className="Datas-center">
 
-        <Paper className="Datas-tools" >
+        <div className="Datas-tools" >
 
           <div>
             <Typography variant="h4" style={{ marginBottom: '20px' }}>Mes données</Typography>
@@ -202,7 +202,7 @@ function DataPageHook () {
               </FormControl>
             </div>
           </div>
-        </Paper>
+        </div>
 
         <DataListHook datas={datas} order={order} filterLanguage={filterLanguage} filterTag={filterTag} filterSearch={searchValue} />
       </div>

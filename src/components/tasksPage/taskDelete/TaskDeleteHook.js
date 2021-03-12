@@ -1,16 +1,39 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { red } from '@material-ui/core/colors'
-import { withStyles, useTheme } from '@material-ui/core/styles'
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, useMediaQuery } from '@material-ui/core'
+import { withStyles, makeStyles } from '@material-ui/core/styles'
+import { Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Zoom } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 
-const ColorButton = withStyles(() => ({
-  root: {
-    backgroundColor: red[500],
+const useStyles = makeStyles((theme) => ({
+  blurEffect: {
+    background: 'rgba(255,255,255,0.1)',
+    padding: '1em',
+    boxShadow: '20px 20px 40px -6px rgba(0,0,0,0.2)',
+    border: '1px solid rgba(255,255,255,0.2)',
+    borderRadius: '20px',
+    maxWidth: '80vw'
+  },
+  blurEffectBack: {
+    background: 'rgba(255,255,255,0.1)',
+    backdropFilter: 'blur(10px)'
+  },
+  cancelButton: {
+    color: 'white',
+    boxShadow: '-1px -4px 50px 3px ' + theme.palette.warning.main,
+    backgroundColor: theme.palette.warning.main,
     '&:hover': {
-      backgroundColor: red[700]
+      backgroundColor: theme.palette.warning.dark
+    }
+  }
+}))
+
+const ColorButton = withStyles((theme) => ({
+  root: {
+    boxShadow: '-1px -4px 50px 3px ' + theme.palette.error.main,
+    backgroundColor: theme.palette.error.main,
+    '&:hover': {
+      backgroundColor: theme.palette.error.dark
     }
   }
 }))(Button)
@@ -19,42 +42,45 @@ const ColorButton = withStyles(() => ({
  * TaskDeleteHook class
  */
 function TaskDeleteHook (props) {
-  const theme = useTheme()
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
+  const classes = useStyles()
 
   return (
     <Dialog
       onClose={props.close}
       open={props.isOpen}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
-      fullScreen={fullScreen}
+      aria-labelledby="form-dialog-title"
+      classes={{ paper: classes.blurEffect, root: classes.blurEffectBack }}
+      TransitionComponent={Zoom}
+      transitionDuration={{ enter: 500, exit: 500 }}
     >
-      <DialogTitle id="alert-dialog-title">Supprimer la tâche !</DialogTitle>
-
+      <DialogTitle id="form-dialog-title">Supprimer la tâche</DialogTitle>
       <DialogContent>
+
         <DialogContentText id="alert-dialog-description">
-      Es-tu sur de vouloir supprimer cette tâche ?
+     Es-tu sur de vouloir supprimer cette tâche ?
         </DialogContentText>
+
       </DialogContent>
-
       <DialogActions>
+        <ButtonGroup className="align-right">
 
-        <Button
-          variant="contained"
-          color="default"
-          onClick={props.close} >
+          <Button
+            variant="contained"
+            color="default"
+            className={classes.cancelButton}
+            onClick={props.close} >
               Annuler
-        </Button>
+          </Button>
 
-        <ColorButton
-          variant="contained"
-          color="primary"
-          startIcon={<DeleteIcon/>}
-          onClick={() => {props.delete(props.index)}}
-        >
-          Supprimer
-        </ColorButton>
+          <ColorButton
+            variant="contained"
+            color="primary"
+            onClick={() => {props.delete(props.index)}}
+            startIcon={<DeleteIcon/>}
+          >
+              Supprimer
+          </ColorButton>
+        </ButtonGroup>
       </DialogActions>
     </Dialog>
   )

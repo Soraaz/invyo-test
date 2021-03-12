@@ -11,7 +11,8 @@ import { makeStyles } from '@material-ui/core'
 
 const useStyles = makeStyles(() => ({
   content: {
-    marginTop: '5vh'
+    marginTop: '5vh',
+    padding: '15px'
   }
 }))
 
@@ -25,7 +26,6 @@ function Content (props) {
 
   return (
     <div className={classes.content} style={ { marginTop: !props.isConnected ? 0 : '5vh' } }>
-      {/* <Navbar isConnected={props.isConnected} changeIsConnected={props.changeIsConnected} /> */}
       <Switch>
         {!props.isConnected ? <Route path={'/login'} component={() => <SignInHook isConnected={props.isConnected} changeIsConnected={props.changeIsConnected} />} /> : null}
         {props.isConnected ? <Route path={'/data'} component={DataPageHook} /> : null}
