@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 
 import { debugLog } from '../../../lib/logs'
 import TaskHook from './task/TaskHook'
-import { IconButton, makeStyles, Typography } from '@material-ui/core'
+import { IconButton, makeStyles, Typography, useMediaQuery, useTheme } from '@material-ui/core'
 import AddCircleIcon from '@material-ui/icons/AddCircle'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff'
@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center'
   },
   cardButtons: {
+    transform: 'translate(-5%, 0%)',
     width: '400px',
     padding: '1em',
     backdropFilter: 'blur(10px)',
@@ -63,9 +64,11 @@ function TaskListHook (props){
   debugLog('TaskList:render')
 
   const classes = useStyles()
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const { width } = useWindowDimensions()
 
-  const [columns, setColumns] = useState((width) / 220)
+  const [columns, setColumns] = useState(0)
 
   const [taskFinishLength, setTaskFinishLength] = useState(() => {
     const tmpTask = props.tasks
@@ -75,8 +78,8 @@ function TaskListHook (props){
   })
 
   useEffect(() => {
-    setColumns(width / 220)
-  }, [width])
+    setColumns((width) / (isMobile ? 180 : 210))
+  }, [width, isMobile])
 
   useEffect(() => {
     setTaskFinishLength(() => {
@@ -128,7 +131,6 @@ function TaskListHook (props){
 
       {TaskListHook.length ?
         <div className="TaskList-header">
-          {width}: {Math.floor(columns)}
           <div className={classes.flexBox}>
             <MasonryLayout columns={(Math.floor(columns) - 1) > 0 ? (Math.floor(columns)) : 1} gap={0}>
               {TaskListHook}

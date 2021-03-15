@@ -13,6 +13,8 @@ import BackGroundHeader from './assets/dashboard_background.jpg'
 // @ts-ignore
 import BackGroundHeaderNight from './assets/dashboard_background_night3.jpg'
 
+const muiTheme = createMuiTheme()
+
 const themeRoot = {
   overrides: {
     MuiCssBaseline: {
@@ -68,7 +70,19 @@ const themeRoot = {
     }
   },
   typography: {
-    fontFamily: 'Poppins, Arial'
+    fontFamily: 'Poppins, Arial',
+    subtitle1: {
+      fontSize: '1rem',
+      [muiTheme.breakpoints.down('sm')]: {
+        fontSize: '1rem'
+      }
+    },
+    h6: {
+      fontSize: '1rem',
+      [muiTheme.breakpoints.down('sm')]: {
+        fontSize: '1rem'
+      }
+    }
   },
   palette: {
     primary: {

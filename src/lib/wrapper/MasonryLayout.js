@@ -27,7 +27,7 @@ const MasonryLayout = (props) => {
     result.push (
       <div
         key={i}
-        style={{ marginLeft: `${i > 0 ? props.gap : 0}px`, flex: 1 }}>
+        style={{ marginLeft: `${i > 0 ? props.gap : 0}px` }}>
         {columnWrapper[`columns${i}`]}
       </div>
     )

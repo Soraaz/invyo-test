@@ -12,7 +12,8 @@ import { makeStyles } from '@material-ui/core'
 const useStyles = makeStyles(() => ({
   content: {
     marginTop: '5vh',
-    padding: '15px'
+    paddingTop: '15px',
+    paddingLeft: '15px'
   }
 }))
 

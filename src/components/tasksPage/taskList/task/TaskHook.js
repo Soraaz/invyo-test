@@ -27,7 +27,10 @@ const useStyles = makeStyles((theme) => ({
     backdropFilter: 'blur(10px)',
     boxShadow: '20px 20px 40px -6px rgba(0,0,0,0.2)',
     border: '1px solid rgba(255,255,255,0.2)',
-    borderRadius: '20px'
+    borderRadius: '20px',
+    [theme.breakpoints.down('sm')]: {
+      width: '155px'
+    }
   },
   blurEffectBack: {
     background: 'rgba(255,255,255,0.1)',
@@ -36,7 +39,10 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: '1em',
     marginBottom: '1em',
     border: '1px solid rgba(255,255,255,0.2)',
-    borderRadius: '20px'
+    borderRadius: '20px',
+    [theme.breakpoints.down('sm')]: {
+      width: '155px'
+    }
   },
   cardTitle: {
     fontSize: 15,
