@@ -32,7 +32,9 @@ const useStyles = makeStyles((theme) => ({
   blurEffectBack: {
     background: 'rgba(255,255,255,0.1)',
     width: '190px',
-    margin: '1em',
+    marginTop: '1em',
+    marginLeft: '1em',
+    marginBottom: '1em',
     border: '1px solid rgba(255,255,255,0.2)',
     borderRadius: '20px'
   },

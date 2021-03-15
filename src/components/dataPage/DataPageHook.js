@@ -6,7 +6,7 @@ import MultiSelectHook from '../../lib/material-ui/MultiSelectHook'
 import DataListHook from './dataList/DataListHook'
 // @ts-ignore
 import datasFile from '../../data/data.js'
-import { InputLabel, MenuItem, Select, TextField, makeStyles, FormControl, OutlinedInput, Typography, Paper } from '@material-ui/core'
+import { InputLabel, MenuItem, Select, TextField, makeStyles, FormControl, OutlinedInput, Typography } from '@material-ui/core'
 
 // Order enum
 export const FilterOrder = {

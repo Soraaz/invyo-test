@@ -3,7 +3,7 @@ import React from 'react'
 import './Network.scss'
 import { debugLog } from '../../../lib/logs'
 import Graph from 'react-graph-vis'
-import { Paper, Typography } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 // @ts-ignore
 import datasFile from '../../../data/data'
 

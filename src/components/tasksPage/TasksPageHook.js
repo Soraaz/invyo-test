@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0)
   },
   card: {
-    padding: '15px',
+    paddingTop: '15px',
     background: 'content-box'
     // backgroundColor: '#5c3a7d'
   }

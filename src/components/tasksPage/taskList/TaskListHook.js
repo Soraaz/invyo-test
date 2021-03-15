@@ -10,6 +10,9 @@ import VisibilityOffIcon from '@material-ui/icons/VisibilityOff'
 import stringToDate from 'lib/tools/StringToDate'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 
+import MasonryLayout from '../../../lib/wrapper/MasonryLayout'
+import useWindowDimensions from './../../../lib/tools/useWindowDimensions'
+
 const useStyles = makeStyles((theme) => ({
   flexBox: {
     flexWrap: 'wrap',
@@ -18,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
       flexDirection: 'row',
       justifyContent: 'center'
     },
-    display: 'flex',
+    // display: 'flex',
     overflow: 'auto',
     maxHeight: '80vh',
     height: '80vh',
@@ -60,6 +63,9 @@ function TaskListHook (props){
   debugLog('TaskList:render')
 
   const classes = useStyles()
+  const { width } = useWindowDimensions()
+
+  const [columns, setColumns] = useState((width) / 220)
 
   const [taskFinishLength, setTaskFinishLength] = useState(() => {
     const tmpTask = props.tasks
@@ -67,6 +73,10 @@ function TaskListHook (props){
       return (task.isEnd)
     }).length
   })
+
+  useEffect(() => {
+    setColumns(width / 220)
+  }, [width])
 
   useEffect(() => {
     setTaskFinishLength(() => {
@@ -118,8 +128,11 @@ function TaskListHook (props){
 
       {TaskListHook.length ?
         <div className="TaskList-header">
+          {width}: {Math.floor(columns)}
           <div className={classes.flexBox}>
-            {TaskListHook}
+            <MasonryLayout columns={(Math.floor(columns) - 1) > 0 ? (Math.floor(columns)) : 1} gap={0}>
+              {TaskListHook}
+            </MasonryLayout>
           </div>
         </div> :
         <p>Pas de tâches pour le moment !</p>}
